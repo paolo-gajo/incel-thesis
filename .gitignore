@@ -5,6 +5,7 @@
 /data/datasets
 /old
 /tools
+/logs
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
