@@ -6,6 +6,7 @@
 /old
 /tools
 /logs
+/results
 *.o[0-9]*
 *.e[0-9]*
 .gitignore

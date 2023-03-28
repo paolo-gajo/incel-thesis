@@ -16,11 +16,9 @@ model_name = 'bert-base-multilingual-cased'
 
 import torch
 from datasets import Dataset
-from transformers import BertTokenizer, BertForMaskedLM, DataCollatorForLanguageModeling, AutoTokenizer, AutoModelForMaskedLM, Trainer, TrainingArguments, TrainerCallback
+from transformers import BertTokenizer, BertForMaskedLM, DataCollatorForLanguageModeling, AutoTokenizer, AutoModelForMaskedLM, Trainer, TrainingArguments
 import pickle
 from typing import Dict
-from datetime import datetime
-import time
 
 tokenizer = AutoTokenizer.from_pretrained(model_name)
 
@@ -118,7 +116,7 @@ training_args = TrainingArguments(
     logging_dir='/home/pgajo/working/logs/',
     logging_steps=10,
     report_to='none',
-    disable_tqdm=1,
+    disable_tqdm=0,
 )
 
 # extend the huggingface Trainer class to make custom methods
@@ -141,19 +139,6 @@ class CustomTrainer(Trainer):
         print("Current language:", language_option)
         print(f"MOM LOOK I'M LOGGING: {progress_percentage:.2f}% steps completed ({self.state.global_step}/{total_steps})")
 
-        # time now
-        time_now = time.time() - start_time_0
-        print("Time elapsed:", time_now)
-
-        time_left = time_now * (total_steps - self.state.global_step) / self.state.global_step
-        # Calculate the hours, minutes, and seconds left
-        hours_left, remainder = divmod(time_left, 3600)
-        minutes_left, seconds_left = divmod(remainder, 60)
-        
-        # Print the time left
-        print(f"Time left: {int(hours_left):02d}h {int(minutes_left):02d}m {int(seconds_left):02d}s")
-
-
 trainer = CustomTrainer(
     model=model,
     args=training_args,
@@ -162,7 +147,6 @@ trainer = CustomTrainer(
     tokenizer=tokenizer,
 )
 
-start_time_0 = time.time()
 
 trainer.train(
     # resume_from_checkpoint = True
