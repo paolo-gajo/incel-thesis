@@ -1,0 +1,26 @@
+Model: "sequential"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ conv1d (Conv1D)             (None, 100, 250)          75250     
+                                                                 
+ global_max_pooling1d (Globa  (None, 250)              0         
+ lMaxPooling1D)                                                  
+                                                                 
+ dense (Dense)               (None, 512)               128512    
+                                                                 
+ dropout (Dropout)           (None, 512)               0         
+                                                                 
+ dense_1 (Dense)             (None, 512)               262656    
+                                                                 
+ dropout_1 (Dropout)         (None, 512)               0         
+                                                                 
+ activation (Activation)     (None, 512)               0         
+                                                                 
+ dense_2 (Dense)             (None, 1)                 513       
+                                                                 
+=================================================================
+Total params: 466,931
+Trainable params: 466,931
+Non-trainable params: 0
+_________________________________________________________________

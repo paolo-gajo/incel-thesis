@@ -11,8 +11,8 @@ print(language_option)
 # model_name = 'roberta-base'
 
 # multilingual
-model_name = 'bert-base-multilingual-cased'
-# model_name = 'xlm-roberta-base'
+# model_name = 'bert-base-multilingual-cased'
+model_name = 'xlm-roberta-base'
 
 import torch
 from datasets import Dataset
@@ -29,7 +29,7 @@ def load_custom_corpus(file_path):
     import pandas as pd
     df = pd.read_csv(
         file_path,
-        # nrows=10000
+        nrows=10000
         )
     df = df.fillna('')
     df = df[df['data_type'] == 'unknown'] # only take rows that do not belong to train/dev/test of IFD-EN-5203
@@ -110,7 +110,7 @@ model = AutoModelForMaskedLM.from_pretrained(model_name)
 training_args = TrainingArguments(
     output_dir='/home/pgajo/working/results',
     num_train_epochs=1,
-    per_device_train_batch_size=8,
+    per_device_train_batch_size=2,
     save_steps=10_000,
     save_total_limit=2,
     logging_dir='/home/pgajo/working/logs/',
@@ -137,7 +137,7 @@ class CustomTrainer(Trainer):
         print("Global step:", self.state.global_step)
         print("Current model:", model_name)
         print("Current language:", language_option)
-        print(f"MOM LOOK I'M LOGGING: {progress_percentage:.2f}% steps completed ({self.state.global_step}/{total_steps})")
+        print(f"Progress: {progress_percentage:.2f}% steps completed ({self.state.global_step}/{total_steps})")
 
 trainer = CustomTrainer(
     model=model,

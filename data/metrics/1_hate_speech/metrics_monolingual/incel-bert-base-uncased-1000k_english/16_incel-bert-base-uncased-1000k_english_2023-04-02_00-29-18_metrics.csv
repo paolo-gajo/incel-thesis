@@ -1,0 +1,13 @@
+epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+1.0,0.8750000000000001,0.910958904109589,0.8417721518987342,0.853615520282187,0.88,0.8287671232876712,incel-bert-base-uncased-1000k_english,15634,"df_stormfront_train(7492)
+train_hateval_2019_english(4500)
+train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),16
+2.0,0.8629921259842519,0.8589341692789969,0.8670886075949367,0.8605042016806722,0.8448844884488449,0.8767123287671232,incel-bert-base-uncased-1000k_english,15634,"df_stormfront_train(7492)
+train_hateval_2019_english(4500)
+train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),16
+3.0,0.8602150537634408,0.835820895522388,0.8860759493670886,0.8604269293924466,0.8264984227129337,0.8972602739726028,incel-bert-base-uncased-1000k_english,15634,"df_stormfront_train(7492)
+train_hateval_2019_english(4500)
+train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),16
+4.0,0.8480243161094225,0.8157894736842105,0.8829113924050633,0.854368932038835,0.8098159509202454,0.9041095890410958,incel-bert-base-uncased-1000k_english,15634,"df_stormfront_train(7492)
+train_hateval_2019_english(4500)
+train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),16

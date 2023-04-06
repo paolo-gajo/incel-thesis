@@ -1,0 +1,3 @@
+,f1_score_pos_val,acc_val,prec_val,recall_val,f1_score_pos_test,acc_test,prec_test,recall_test
+0,0.57,0.68,0.64,0.52,0.59,0.71,0.62,0.56
+Average,0.57,0.68,0.64,0.52,0.59,0.71,0.62,0.56
