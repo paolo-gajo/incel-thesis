@@ -1,9 +1,0 @@
-epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
-1.0,0.8625429553264605,0.943609022556391,0.7943037974683544,0.8618181818181818,0.9186046511627907,0.8116438356164384,incel-bert-base-uncased-1000k_english,13266,"hatexplain_binary_train(9624)
-train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),13
-2.0,0.8641975308641975,0.8433734939759037,0.8860759493670886,0.8429752066115702,0.8146964856230032,0.8732876712328768,incel-bert-base-uncased-1000k_english,13266,"hatexplain_binary_train(9624)
-train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),13
-3.0,0.8755760368663595,0.8507462686567164,0.9018987341772152,0.849586776859504,0.8210862619808307,0.8801369863013698,incel-bert-base-uncased-1000k_english,13266,"hatexplain_binary_train(9624)
-train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),13
-4.0,0.8781249999999999,0.8672839506172839,0.8892405063291139,0.8528428093645485,0.8333333333333334,0.8732876712328768,incel-bert-base-uncased-1000k_english,13266,"hatexplain_binary_train(9624)
-train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),13

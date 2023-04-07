@@ -1,5 +1,0 @@
-epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
-1.0,0.8696138780078344,0.8740157480314961,0.8652561247216035,0.8551644547028274,0.8616279069767442,0.8487972508591065,incel-bert-base-uncased-1000k_english,9624,hatexplain_binary_train(9624),hatexplain_binary_dev(2062),hatexplain_binary_test(2063),11
-2.0,0.8807758128921849,0.9029239766081871,0.8596881959910914,0.8669022379269727,0.8921212121212121,0.843069873997709,incel-bert-base-uncased-1000k_english,9624,hatexplain_binary_train(9624),hatexplain_binary_dev(2062),hatexplain_binary_test(2063),11
-3.0,0.8843612334801763,0.8747276688453159,0.8942093541202673,0.8677966101694915,0.8561872909698997,0.8797250859106529,incel-bert-base-uncased-1000k_english,9624,hatexplain_binary_train(9624),hatexplain_binary_dev(2062),hatexplain_binary_test(2063),11
-4.0,0.8852097130242825,0.8774617067833698,0.8930957683741648,0.8662131519274375,0.8574635241301908,0.8751431844215349,incel-bert-base-uncased-1000k_english,9624,hatexplain_binary_train(9624),hatexplain_binary_dev(2062),hatexplain_binary_test(2063),11

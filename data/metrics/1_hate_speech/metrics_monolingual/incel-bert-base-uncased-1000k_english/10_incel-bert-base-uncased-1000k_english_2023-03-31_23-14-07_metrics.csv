@@ -1,9 +1,0 @@
-epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
-1.0,0.8642745709828392,0.8523076923076923,0.8765822784810127,0.8527918781725887,0.842809364548495,0.863013698630137,incel-bert-base-uncased-1000k_english,8142,"train_hateval_2019_english(4500)
-train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),10
-2.0,0.8725038402457758,0.8477611940298507,0.8987341772151899,0.8471760797342193,0.8225806451612904,0.8732876712328768,incel-bert-base-uncased-1000k_english,8142,"train_hateval_2019_english(4500)
-train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),10
-3.0,0.872894333843798,0.8456973293768546,0.9018987341772152,0.845771144278607,0.819935691318328,0.8732876712328768,incel-bert-base-uncased-1000k_english,8142,"train_hateval_2019_english(4500)
-train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),10
-4.0,0.8742138364779874,0.86875,0.879746835443038,0.8537414965986395,0.847972972972973,0.8595890410958904,incel-bert-base-uncased-1000k_english,8142,"train_hateval_2019_english(4500)
-train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),10
