@@ -1,0 +1,1 @@
+# Repository for the experimental part of the master's thesis "This Is My Cope: Identification and Forecasting of Hate Speech in Inceldom"

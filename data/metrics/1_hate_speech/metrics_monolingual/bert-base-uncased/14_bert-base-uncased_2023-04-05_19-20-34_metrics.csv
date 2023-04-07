@@ -1,0 +1,13 @@
+epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+1.0,0.8279569892473119,0.9545454545454546,0.7310126582278481,0.804642166344294,0.9244444444444444,0.7123287671232876,bert-base-uncased,17766,"hatexplain_binary_train(9624)
+train_hateval_2019_english(4500)
+train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),14
+2.0,0.8597560975609756,0.8294117647058824,0.8924050632911392,0.8306188925081434,0.7919254658385093,0.8732876712328768,bert-base-uncased,17766,"hatexplain_binary_train(9624)
+train_hateval_2019_english(4500)
+train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),14
+3.0,0.8663446054750402,0.8819672131147541,0.8512658227848101,0.8391608391608392,0.8571428571428571,0.821917808219178,bert-base-uncased,17766,"hatexplain_binary_train(9624)
+train_hateval_2019_english(4500)
+train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),14
+4.0,0.8575949367088608,0.8575949367088608,0.8575949367088608,0.8410256410256409,0.8395904436860068,0.8424657534246576,bert-base-uncased,17766,"hatexplain_binary_train(9624)
+train_hateval_2019_english(4500)
+train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),14

@@ -1,0 +1,5 @@
+Group 1 normality test: ShapiroResult(statistic=0.9517923593521118, pvalue=0.7499857544898987)
+Group 2 normality test: ShapiroResult(statistic=0.8990142941474915, pvalue=0.4044615924358368)
+Levene's test: LeveneResult(statistic=0.07857142857142886, pvalue=0.7863546956170467)
+t-statistic: -22.75660455444655
+p-value: 1.4736264943990306e-08

@@ -1,0 +1,4 @@
+{
+    "python.analysis.typeCheckingMode": "off",
+    "csv-edit.doubleClickColumnHandleForcedWith": 150
+}
