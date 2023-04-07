@@ -1,7 +1,0 @@
-,f1_score_pos_val,acc_val,prec_val,recall_val,f1_score_pos_test,acc_test,prec_test,recall_test,model,train_len,train_set,evaluation_set
-0,0.79,0.82,0.75,0.84,0.79,0.83,0.74,0.85,CNN,12642,incelsis+hateval_train,incelsis
-1,0.81,0.85,0.84,0.77,0.8,0.85,0.81,0.78,CNN,12642,incelsis+hateval_train,incelsis
-2,0.82,0.86,0.86,0.78,0.8,0.86,0.84,0.77,CNN,12642,incelsis+hateval_train,incelsis
-3,0.82,0.86,0.84,0.81,0.79,0.85,0.82,0.77,CNN,12642,incelsis+hateval_train,incelsis
-4,0.8,0.84,0.78,0.84,0.79,0.83,0.74,0.86,CNN,12642,incelsis+hateval_train,incelsis
-Average,0.81,0.85,0.81,0.81,0.79,0.84,0.79,0.81,CNN,12642,incelsis+hateval_train,incelsis

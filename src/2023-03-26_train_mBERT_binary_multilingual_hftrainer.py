@@ -351,7 +351,7 @@ print('evalita20 full train set size:', len(df_train_evalita20))
 # metrics_id = 0 # base monolingual setting
 # metrics_id = 17 # base multilingual setting
 
-for j in range(17, 26):
+for j in range(19, 26):
     metrics_id = j
 
     # %% Dataset combinations
@@ -512,22 +512,27 @@ for j in range(17, 26):
 
     # %% Loop
 
-    for model_name in model_name_list[9:13]:
+    for model_name in model_name_list[9:10]:
         for i in range(5):
-
+            
             # Filename bits
+            metrics_path_category = '/home/pgajo/working/data/metrics/1_hate_speech'
+            # metrics_path_category = '/home/pgajo/working/data/metrics/2_racism+misogyny'
+            # metrics_path_category = '/home/pgajo/working/data/metrics/3_hate_forecasting'
+
             index = model_name_list.index(model_name)
             if index > 8:
                 multilingual = 1
-                metrics_save_path = '/home/pgajo/working/data/metrics/metrics_multilingual'
+                metrics_save_path = f'{metrics_path_category}/metrics_multilingual/'
             else:
                 multilingual = 0
-                metrics_save_path = '/home/pgajo/working/data/metrics/metrics_monolingual'
+                metrics_save_path = f'{metrics_path_category}/metrics_monolingual/'
             
             model_name_simple = model_name.split('/')[-1]
             
-            metrics_save_path_model = os.path.join(
-                metrics_save_path, model_name_simple)
+            metrics_save_path_model = os.path.join(metrics_save_path, model_name_simple)
+            print(metrics_save_path_model)
+            # metrics_save_path_model = metrics_save_path + model_name_simple
 
             if not os.path.exists(metrics_save_path_model):
                 os.mkdir(metrics_save_path_model)
