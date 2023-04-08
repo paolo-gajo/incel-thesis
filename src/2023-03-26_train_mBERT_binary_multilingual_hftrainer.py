@@ -335,9 +335,10 @@ file_path_csv_evalita20_train = '/home/pgajo/working/data/datasets/Italian/haspe
 df_train_evalita20 = pd.read_csv(
     file_path_csv_evalita20_train, sep='\t', index_col=None)
 # display(df_train_evalita20)
-
+df_train_evalita20 = df_train_evalita20.fillna('')
+df_train_evalita20['data_type'] = 'train_evalita20'
 print('evalita20 full train set size:', len(df_train_evalita20))
-
+# display(df_train_evalita20)
 # # load the offenseval_2020 dataset
 # from datasets import load_dataset
 
@@ -351,7 +352,7 @@ print('evalita20 full train set size:', len(df_train_evalita20))
 # metrics_id = 0 # base monolingual setting
 # metrics_id = 17 # base multilingual setting
 
-for j in range(19, 26):
+for j in range(17, 18):
     metrics_id = j
 
     # %% Dataset combinations
@@ -390,7 +391,7 @@ for j in range(19, 26):
 
     # set train datasets
     df_train = pd.DataFrame()
-
+    print(metrics_list_names[metrics_id][0])
     if 'incelsis' in metrics_list_names[metrics_id][0]:
         df_train = pd.concat([df_train, df_train_incelsis_5203])
 
@@ -568,7 +569,7 @@ for j in range(19, 26):
                 print(model.config)
 
             # Data pre-processing
-
+            print('################', df_train.text.values[0])
             # Encode the training data using the tokenizer
             encoded_data_train = tokenizer.batch_encode_plus(
                 [el for el in tqdm(df_train.text.values)],
@@ -814,3 +815,5 @@ for j in range(19, 26):
 
             # Train the model
             trainer.train()
+
+# %%
