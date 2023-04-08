@@ -363,15 +363,15 @@ for j in range(17, 18):
         ['train_incelsis_5203+train_davidson_sample', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 1
         ['train_incelsis_5203+train_hateval_2019_english_sample', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 2
         ['train_incelsis_5203+train_davidson_sample+train_hateval_2019_english_sample', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 3
-        ['train_hateval_2019_english', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 4
-        ['train_hateval_2019_english+train_davidson', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 5
+        ['train_hateval_2019_english', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 4 - no incelsis
+        ['train_hateval_2019_english+train_davidson', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 5 - no incelsis
         ['train_incelsis_5203', 'dev_hateval_2019_english', 'test_hateval_2019_english'],  # 6
-        ['train_davidson', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 7
+        ['train_davidson', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 7 - no incelsis
         ['train_incelsis_5203', 'dev_davidson', 'test_davidson'],  # 8
         ['train_incelsis_5203+train_davidson+train_hateval_2019_english', 'dev_davidson', 'test_davidson'],  # 9
         ['train_incelsis_5203+train_hateval_2019_english', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 10
-        ['train_hatexplain_binary', 'dev_hatexplain_binary', 'test_hatexplain_binary'],  # 11
-        ['train_hatexplain_binary', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 12
+        ['train_hatexplain_binary', 'dev_hatexplain_binary', 'test_hatexplain_binary'],  # 11 - no incelsis
+        ['train_hatexplain_binary', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 12 - no incelsis
         ['train_incelsis_5203+train_hatexplain_binary', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 13
         ['train_incelsis_5203+train_hatexplain_binary+train_hateval_2019_english', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 14
         ['train_incelsis_5203+train_stormfront', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 15
