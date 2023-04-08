@@ -1,0 +1,2 @@
+Mann-Whitney U test statistic: 100.0
+p-value: 0.00018267179110955002
