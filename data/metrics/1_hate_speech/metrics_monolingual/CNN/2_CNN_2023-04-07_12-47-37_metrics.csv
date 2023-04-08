@@ -1,4 +1,4 @@
-epoch,train_loss,dev_loss,dev_f1,dev_precision,dev_recall,test_loss,test_f1,test_precision,test_recall,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+epoch,train_loss,val_loss,val_f1,val_prec,val_rec,test_loss,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
 3.0,0.3432222902774811,0.35563069581985474,0.8012139605462821,0.7696793002915452,0.8354430379746836,0.3523126244544983,0.7927631578947368,0.7626582278481012,0.8253424657534246,CNN,7284,"train_incelsis(3642)
 hateval_train(3642)",dev_incelsis(780),test_incelsis(781),2
 3.0,0.3368068337440491,0.33256202936172485,0.8104575163398693,0.8378378378378378,0.7848101265822784,0.3359852433204651,0.795774647887324,0.8188405797101449,0.773972602739726,CNN,7284,"train_incelsis(3642)

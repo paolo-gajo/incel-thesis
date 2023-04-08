@@ -365,10 +365,10 @@ for j in range(17, 18):
         ['train_incelsis_5203+train_davidson_sample+train_hateval_2019_english_sample', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 3
         ['train_hateval_2019_english', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 4 - no incelsis
         ['train_hateval_2019_english+train_davidson', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 5 - no incelsis
-        ['train_incelsis_5203', 'dev_hateval_2019_english', 'test_hateval_2019_english'],  # 6
+        ['train_incelsis_5203', 'dev_hateval_2019_english', 'test_hateval_2019_english'],  # 6 - no incelsis
         ['train_davidson', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 7 - no incelsis
-        ['train_incelsis_5203', 'dev_davidson', 'test_davidson'],  # 8
-        ['train_incelsis_5203+train_davidson+train_hateval_2019_english', 'dev_davidson', 'test_davidson'],  # 9
+        ['train_incelsis_5203', 'dev_davidson', 'test_davidson'],  # 8 - no incelsis
+        ['train_incelsis_5203+train_davidson+train_hateval_2019_english', 'dev_davidson', 'test_davidson'],  # 9 - no incelsis
         ['train_incelsis_5203+train_hateval_2019_english', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 10
         ['train_hatexplain_binary', 'dev_hatexplain_binary', 'test_hatexplain_binary'],  # 11 - no incelsis
         ['train_hatexplain_binary', 'dev_incelsis_5203', 'test_incelsis_5203'],  # 12 - no incelsis
@@ -389,7 +389,7 @@ for j in range(17, 18):
         ['train_incelsis_5203+train_evalita18facebook+train_evalita18twitter+train_evalita20', 'dev_incelsis_5203', 'test_fdb_500'],  # 25
     ]
 
-        
+    no_incelsis_list = [4, 5, 6, 7, 8, 9, 11, 12]
 
     # set train datasets
     df_train = pd.DataFrame()

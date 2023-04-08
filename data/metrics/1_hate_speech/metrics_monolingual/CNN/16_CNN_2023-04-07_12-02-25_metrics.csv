@@ -1,4 +1,4 @@
-epoch,train_loss,dev_loss,dev_f1,dev_precision,dev_recall,test_loss,test_f1,test_precision,test_recall,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+epoch,train_loss,val_loss,val_f1,val_prec,val_rec,test_loss,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
 3.0,0.31955212354660034,0.32726171612739563,0.8288000000000001,0.8381877022653722,0.819620253164557,0.32239824533462524,0.8159722222222223,0.8274647887323944,0.8047945205479452,CNN,15634,"df_stormfront_train(7492)
 train_hateval_2019_english(4500)
 train_incelsis(3642)",dev_incelsis(780),test_incelsis(781),16

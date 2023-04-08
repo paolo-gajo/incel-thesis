@@ -660,8 +660,8 @@ for j in range(1, 15):
     print(df_test['data_type'].value_counts(normalize=False))
     print('Train set length', len(df_dev), '\n')
 
-    df_metrics = pd.DataFrame(columns=['epoch', 'train_loss', 'dev_loss', 'dev_f1', 'dev_precision',
-                            'dev_recall', 'test_loss', 'test_f1', 'test_precision', 'test_recall'])
+    df_metrics = pd.DataFrame(columns=['epoch', 'train_loss', 'val_loss', 'val_f1', 'val_prec',
+                            'val_rec', 'test_loss', 'test_f1', 'test_prec', 'test_rec'])
 
     epochs = 3
 
@@ -680,44 +680,44 @@ for j in range(1, 15):
         # Get the validation loss for each epoch
         train_losses = history.history['loss']
         train_loss = train_losses[-1]
-        dev_losses = history.history['val_loss']
-        dev_loss = dev_losses[-1]
+        val_losses = history.history['val_loss']
+        val_loss = val_losses[-1]
 
         # Compute dev metrics
         pred_dev = [el[0] for el in model.predict(x_dev)]
         pred_dev = [(el > threshold).astype("int32") for el in pred_dev]
 
-        # Calculate dev_loss and dev_accuracy
+        # Calculate val_loss and dev_accuracy
         dev_metrics = model.evaluate(x_dev, y_dev, verbose=0)
-        dev_loss, dev_accuracy, *_ = dev_metrics
+        val_loss, dev_accuracy, *_ = dev_metrics
 
-        dev_f1 = f1_score(y_dev, pred_dev, average='binary', pos_label=1)
-        dev_precision = precision_score(y_dev, pred_dev)
-        dev_recall = recall_score(y_dev, pred_dev)
+        val_f1 = f1_score(y_dev, pred_dev, average='binary', pos_label=1)
+        val_prec = precision_score(y_dev, pred_dev)
+        val_rec = recall_score(y_dev, pred_dev)
 
         # Compute test metrics
         pred_test = [el[0] for el in model.predict(x_test)]
         pred_test = [(el > threshold).astype("int32") for el in pred_test]
 
-        # Calculate dev_loss and dev_accuracy
+        # Calculate val_loss and dev_accuracy
         test_metrics = model.evaluate(x_test, y_test, verbose=0)
         test_loss, test_accuracy, *_ = test_metrics
 
         test_f1 = f1_score(y_test, pred_test, average='binary', pos_label=1)
-        test_precision = precision_score(y_test, pred_test)
-        test_recall = recall_score(y_test, pred_test)
+        test_prec = precision_score(y_test, pred_test)
+        test_rec = recall_score(y_test, pred_test)
 
         df_metrics = df_metrics.append({
             'epoch': epochs,
             'train_loss': train_loss,
-            'dev_loss': dev_loss,
-            'dev_f1': dev_f1,
-            'dev_precision': dev_precision,
-            'dev_recall': dev_recall,
+            'val_loss': val_loss,
+            'val_f1': val_f1,
+            'val_prec': val_prec,
+            'val_rec': val_rec,
             'test_loss': test_loss,
             'test_f1': test_f1,
-            'test_precision': test_precision,
-            'test_recall': test_recall
+            'test_prec': test_prec,
+            'test_rec': test_rec
         }, ignore_index=True)
 
         df_metrics['model'] = model_name_simple
@@ -743,7 +743,7 @@ for j in range(1, 15):
         display(df_metrics)
 
     # Calculate the average of the statistics over the 5 training iterations
-    average_metrics = df_metrics.loc[:, 'train_loss':'test_recall'].mean(axis=0)
+    average_metrics = df_metrics.loc[:, 'train_loss':'test_rec'].mean(axis=0)
 
     # Create a new row with the average statistics
     average_row = pd.DataFrame(average_metrics).transpose()

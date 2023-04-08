@@ -1,2 +1,0 @@
-epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
-1.0,0.47619047619047616,0.3125,1.0,0.5454545454545454,0.375,1.0,roberta-base,16,train_incelsis(16),dev_incelsis(16),test_incelsis(16),0

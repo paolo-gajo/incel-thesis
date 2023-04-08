@@ -1,4 +1,4 @@
-epoch,train_loss,dev_loss,dev_f1,dev_precision,dev_recall,test_loss,test_f1,test_precision,test_recall,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+epoch,train_loss,val_loss,val_f1,val_prec,val_rec,test_loss,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
 3.0,0.43108290433883667,0.33976709842681885,0.8115942028985508,0.8262295081967214,0.7974683544303798,0.33832666277885437,0.8091872791519434,0.8357664233576643,0.7842465753424658,CNN,10926,"davidson(3642)
 train_incelsis(3642)
 hateval_train(3642)",dev_incelsis(780),test_incelsis(781),3

@@ -797,8 +797,8 @@ for model_name in model_name_list[0:1]:
         print(df_test['data_type'].value_counts(normalize=False))
         print('Test set length:', len(df_test), '\n')
 
-        df_metrics = pd.DataFrame(columns=['epoch', 'train_loss', 'dev_loss', 'dev_f1', 'dev_precision',
-                                  'dev_recall', 'test_loss', 'test_f1', 'test_precision', 'test_recall'])
+        df_metrics = pd.DataFrame(columns=['epoch', 'train_loss', 'val_loss', 'val_f1', 'val_prec',
+                                  'val_rec', 'test_loss', 'test_f1', 'test_prec', 'test_rec'])
         for epoch in range(1, epochs + 1):
             model.train()  # set the model in training mode
 
@@ -845,29 +845,29 @@ for model_name in model_name_list[0:1]:
 
             loss_train_avg = loss_train_total / len(dataloader_train)
 
-            dev_loss, pred_val, true_values_val = evaluate(
+            val_loss, pred_val, true_values_val = evaluate(
                 dataloader_val, prob_type, multi_gpu)  # to check overtraining (or overfitting)
-            dev_f1 = f1_score_func(pred_val, true_values_val, prob_type)
+            val_f1 = f1_score_func(pred_val, true_values_val, prob_type)
             dev_prec = prec_func(pred_val, true_values_val, prob_type)
-            dev_recall = recall_func(pred_val, true_values_val, prob_type)
+            val_rec = recall_func(pred_val, true_values_val, prob_type)
 
             test_loss, pred_test, true_values_test = evaluate(
                 dataloader_test, prob_type, multi_gpu)  # to check overtraining (or overfitting)
             test_f1 = f1_score_func(pred_test, true_values_test, prob_type)
             test_prec = prec_func(pred_test, true_values_test, prob_type)
-            test_recall = recall_func(pred_test, true_values_test, prob_type)
+            test_rec = recall_func(pred_test, true_values_test, prob_type)
 
             df_metrics = df_metrics.append({
                 'epoch': int(epoch),
                 'train_loss': loss_train_avg,
-                'dev_loss': dev_loss,
-                'dev_f1': dev_f1,
-                'dev_precision': dev_prec,
-                'dev_recall': dev_recall,
+                'val_loss': val_loss,
+                'val_f1': val_f1,
+                'val_prec': dev_prec,
+                'val_rec': val_rec,
                 'test_loss': test_loss,
                 'test_f1': test_f1,
-                'test_precision': test_prec,
-                'test_recall': test_recall
+                'test_prec': test_prec,
+                'test_rec': test_rec
             }, ignore_index=True)
 
             df_metrics['model'] = model_name_simple
