@@ -1,27 +1,27 @@
 ﻿ID,Setting,Train,Dev,Test
 0,Monolingual,Incels.is,Incels.is,Incels.is
-1,Monolingual,Incels.is + Davidson_Sample,Incels.is,Incels.is
-2,Monolingual,Incels.is + HatEval_EN_Sample,Incels.is,Incels.is
-3,Monolingual,Incels.is + Davidson_Sample + HatEval_EN_Sample,Incels.is,Incels.is
+1,Monolingual,Incels.is \n Davidson_Sample,Incels.is,Incels.is
+2,Monolingual,Incels.is \n HatEval_EN_Sample,Incels.is,Incels.is
+3,Monolingual,Incels.is \n Davidson_Sample \n HatEval_EN_Sample,Incels.is,Incels.is
 4,Monolingual,HatEval_EN,Incels.is,Incels.is
-5,Monolingual,HatEval_EN + Davidson,Incels.is,Incels.is
+5,Monolingual,HatEval_EN \n Davidson,Incels.is,Incels.is
 6,Monolingual,Incels.is,HatEval_EN,HatEval_EN
 7,Monolingual,Davidson,Incels.is,Incels.is
 8,Monolingual,Incels.is,Davidson,Davidson
-9,Monolingual,Incels.is + Davidson + HatEval_EN,Davidson,Davidson
-10,Monolingual,Incels.is + HatEval_EN,Incels.is,Incels.is
+9,Monolingual,Incels.is \n Davidson \n HatEval_EN,Davidson,Davidson
+10,Monolingual,Incels.is \n HatEval_EN,Incels.is,Incels.is
 11,Monolingual,Hatexplain_Binary,Hatexplain_Binary,Hatexplain_Binary
 12,Monolingual,Hatexplain_Binary,Incels.is,Incels.is
-13,Monolingual,Incels.is + Hatexplain_Binary,Incels.is,Incels.is
-14,Monolingual,Incels.is + Hatexplain_Binary + HatEval_EN,Incels.is,Incels.is
-15,Monolingual,Incels.is + Stormfront,Incels.is,Incels.is
-16,Monolingual,Incels.is + Stormfront + HatEval_EN,Incels.is,Incels.is
+13,Monolingual,Incels.is \n Hatexplain_Binary,Incels.is,Incels.is
+14,Monolingual,Incels.is \n Hatexplain_Binary \n HatEval_EN,Incels.is,Incels.is
+15,Monolingual,Incels.is \n Stormfront,Incels.is,Incels.is
+16,Monolingual,Incels.is \n Stormfront \n HatEval_EN,Incels.is,Incels.is
 17,Multilingual,Incels.is,Incels.is,FDB_500
-18,Multilingual,Incels.is + HatEval_EN,Incels.is,FDB_500
-19,Multilingual,Incels.is + HatEval_ES,Incels.is,FDB_500
-20,Multilingual,Incels.is + HatEval_EN + HatEval_ES,Incels.is,FDB_500
-21,Multilingual,Incels.is + Evalita18_Facebook,Incels.is,FDB_500
-22,Multilingual,Incels.is + Evalita18_Twitter,Incels.is,FDB_500
-23,Multilingual,Incels.is + Evalita18_Facebook + Evalita18_Twitter,Incels.is,FDB_500
-24,Multilingual,Incels.is + Evalita20,Incels.is,FDB_500
-25,Multilingual,Incels.is + Evalita18_Facebook + Evalita18_Twitter + Evalita20,Incels.is,FDB_500
+18,Multilingual,Incels.is \n HatEval_EN,Incels.is,FDB_500
+19,Multilingual,Incels.is \n HatEval_ES,Incels.is,FDB_500
+20,Multilingual,Incels.is \n HatEval_EN \n HatEval_ES,Incels.is,FDB_500
+21,Multilingual,Incels.is \n Evalita18_Facebook,Incels.is,FDB_500
+22,Multilingual,Incels.is \n Evalita18_Twitter,Incels.is,FDB_500
+23,Multilingual,Incels.is \n Evalita18_Facebook \n Evalita18_Twitter,Incels.is,FDB_500
+24,Multilingual,Incels.is \n Evalita20,Incels.is,FDB_500
+25,Multilingual,Incels.is \n Evalita18_Facebook \n Evalita18_Twitter \n Evalita20,Incels.is,FDB_500
