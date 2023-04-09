@@ -1,0 +1,27 @@
+﻿ID,Setting,Train,Dev,Test
+0,Monolingual,Incels.is,Incels.is,Incels.is
+1,Monolingual,Incels.is + Davidson_Sample,Incels.is,Incels.is
+2,Monolingual,Incels.is + HatEval_EN_Sample,Incels.is,Incels.is
+3,Monolingual,Incels.is + Davidson_Sample + HatEval_EN_Sample,Incels.is,Incels.is
+4,Monolingual,HatEval_EN,Incels.is,Incels.is
+5,Monolingual,HatEval_EN + Davidson,Incels.is,Incels.is
+6,Monolingual,Incels.is,HatEval_EN,HatEval_EN
+7,Monolingual,,,
+8,Monolingual,,,
+9,Monolingual,,,
+10,Monolingual,,,
+11,Monolingual,,,
+12,Monolingual,,,
+13,Monolingual,,,
+14,Monolingual,,,
+15,Monolingual,,,
+16,Monolingual,,,
+17,Multilingual,,,
+18,Multilingual,,,
+19,Multilingual,,,
+20,Multilingual,,,
+21,Multilingual,,,
+22,Multilingual,,,
+23,Multilingual,,,
+24,Multilingual,,,
+25,Multilingual,,,
