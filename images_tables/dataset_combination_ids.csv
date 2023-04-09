@@ -6,22 +6,22 @@
 4,Monolingual,HatEval_EN,Incels.is,Incels.is
 5,Monolingual,HatEval_EN + Davidson,Incels.is,Incels.is
 6,Monolingual,Incels.is,HatEval_EN,HatEval_EN
-7,Monolingual,,,
-8,Monolingual,,,
-9,Monolingual,,,
-10,Monolingual,,,
-11,Monolingual,,,
-12,Monolingual,,,
-13,Monolingual,,,
-14,Monolingual,,,
-15,Monolingual,,,
-16,Monolingual,,,
-17,Multilingual,,,
-18,Multilingual,,,
-19,Multilingual,,,
-20,Multilingual,,,
-21,Multilingual,,,
-22,Multilingual,,,
-23,Multilingual,,,
-24,Multilingual,,,
-25,Multilingual,,,
+7,Monolingual,Davidson,Incels.is,Incels.is
+8,Monolingual,Incels.is,Davidson,Davidson
+9,Monolingual,Incels.is + Davidson + HatEval_EN,Davidson,Davidson
+10,Monolingual,Incels.is + HatEval_EN,Incels.is,Incels.is
+11,Monolingual,Hatexplain_Binary,Hatexplain_Binary,Hatexplain_Binary
+12,Monolingual,Hatexplain_Binary,Incels.is,Incels.is
+13,Monolingual,Incels.is + Hatexplain_Binary,Incels.is,Incels.is
+14,Monolingual,Incels.is + Hatexplain_Binary + HatEval_EN,Incels.is,Incels.is
+15,Monolingual,Incels.is + Stormfront,Incels.is,Incels.is
+16,Monolingual,Incels.is + Stormfront + HatEval_EN,Incels.is,Incels.is
+17,Multilingual,Incels.is,Incels.is,FDB_500
+18,Multilingual,Incels.is + HatEval_EN,Incels.is,FDB_500
+19,Multilingual,Incels.is + HatEval_ES,Incels.is,FDB_500
+20,Multilingual,Incels.is + HatEval_EN + HatEval_ES,Incels.is,FDB_500
+21,Multilingual,Incels.is + Evalita18_Facebook,Incels.is,FDB_500
+22,Multilingual,Incels.is + Evalita18_Twitter,Incels.is,FDB_500
+23,Multilingual,Incels.is + Evalita18_Facebook + Evalita18_Twitter,Incels.is,FDB_500
+24,Multilingual,Incels.is + Evalita20,Incels.is,FDB_500
+25,Multilingual,Incels.is + Evalita18_Facebook + Evalita18_Twitter + Evalita20,Incels.is,FDB_500
