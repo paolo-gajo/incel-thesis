@@ -330,13 +330,14 @@ df_train_evalita18facebook['data_type'] = 'train_evalita18facebook'
 print('evalita18facebook full train set size:', len(df_train_evalita18facebook))
 
 # load the evalita20 set
-file_path_csv_evalita20_train = '/home/pgajo/working/data/datasets/Italian/haspeede_evalita/2020/haspeede2_dev/haspeede2_dev_taskAB.tsv'
+file_path_csv_evalita20_train = '/home/pgajo/working/data/datasets/Italian/haspeede_evalita/2020/haspeede2_dev/haspeede2_dev_taskAB.csv'
 
 df_train_evalita20 = pd.read_csv(
-    file_path_csv_evalita20_train, sep='\t', index_col=None)
+    file_path_csv_evalita20_train, index_col=None)
 # display(df_train_evalita20)
 df_train_evalita20 = df_train_evalita20.fillna('')
 df_train_evalita20['data_type'] = 'train_evalita20'
+display(df_train_evalita20[:5])
 print('evalita20 full train set size:', len(df_train_evalita20))
 # display(df_train_evalita20)
 # # load the offenseval_2020 dataset
@@ -352,7 +353,7 @@ print('evalita20 full train set size:', len(df_train_evalita20))
 # metrics_id = 0 # base monolingual setting
 # metrics_id = 17 # base multilingual setting
 
-for j in range(17, 18):
+for j in range(24, 25):
     metrics_id = j
 
     # %% Dataset combinations
@@ -390,6 +391,11 @@ for j in range(17, 18):
     ]
 
     no_incelsis_list = [4, 5, 6, 7, 8, 9, 11, 12]
+    print('df_train_incelsis_5203')
+    display(df_train_incelsis_5203[:10])
+
+    print('df_train_evalita20')
+    display(df_train_evalita20[:10])
 
     # set train datasets
     df_train = pd.DataFrame()
@@ -488,6 +494,9 @@ for j in range(17, 18):
     print('Test sets:')
     print(df_test['data_type'].value_counts(normalize=False))
     print('Train set length:', len(df_dev), '\n')
+
+    print('######################################')
+    display(df_train[:10])
 
     # %% Model choice
 
