@@ -1,0 +1,13 @@
+epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+1.0,0.8585209003215434,0.8725490196078431,0.8449367088607594,0.7355371900826447,0.6267605633802817,0.89,incel-bert-base-multilingual-cased-1000k_multi,9642,"train_incelsis(3642)
+train_evalita18facebook(3000)
+train_evalita18twitter(3000)",dev_incelsis(780),test_fdb_500(500),23
+2.0,0.8576104746317512,0.888135593220339,0.8291139240506329,0.7039337474120084,0.6007067137809188,0.85,incel-bert-base-multilingual-cased-1000k_multi,9642,"train_incelsis(3642)
+train_evalita18facebook(3000)
+train_evalita18twitter(3000)",dev_incelsis(780),test_fdb_500(500),23
+3.0,0.8553846153846154,0.8323353293413174,0.879746835443038,0.689655172413793,0.6060606060606061,0.8,incel-bert-base-multilingual-cased-1000k_multi,9642,"train_incelsis(3642)
+train_evalita18facebook(3000)
+train_evalita18twitter(3000)",dev_incelsis(780),test_fdb_500(500),23
+4.0,0.8593508500772797,0.8398791540785498,0.879746835443038,0.6890756302521008,0.5942028985507246,0.82,incel-bert-base-multilingual-cased-1000k_multi,9642,"train_incelsis(3642)
+train_evalita18facebook(3000)
+train_evalita18twitter(3000)",dev_incelsis(780),test_fdb_500(500),23

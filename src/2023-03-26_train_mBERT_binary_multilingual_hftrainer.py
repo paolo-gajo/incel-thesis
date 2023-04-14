@@ -59,7 +59,7 @@ print('Incels.is test set size:', len(df_test_incelsis_5203))
 # load fdb_500 dataset
 df_fdb_500 = pd.read_csv(
     '/home/pgajo/working/data/datasets/Italian/Il_forum_dei_brutti/IFD-IT-500.csv')
-df_fdb_500 = df_fdb_500[['hs', 'text']]
+df_fdb_500 = df_fdb_500[['hs', 'misogynous', 'racist', 'text']]
 df_fdb_500
 df_fdb_500['data_type'] = 'test_fdb_500'
 
@@ -353,7 +353,7 @@ print('evalita20 full train set size:', len(df_train_evalita20))
 # metrics_id = 0 # base monolingual setting
 # metrics_id = 17 # base multilingual setting
 
-for j in range(24, 25):
+for j in range(17, 18):
     metrics_id = j
 
     # %% Dataset combinations
@@ -390,7 +390,6 @@ for j in range(24, 25):
         ['train_incelsis_5203+train_evalita18facebook+train_evalita18twitter+train_evalita20', 'dev_incelsis_5203', 'test_fdb_500'],  # 25
     ]
 
-    no_incelsis_list = [4, 5, 6, 7, 8, 9, 11, 12]
     print('df_train_incelsis_5203')
     display(df_train_incelsis_5203[:10])
 
@@ -490,10 +489,10 @@ for j in range(24, 25):
     print('Train set length:', len(df_train), '\n')
     print('Dev sets:')
     print(df_dev['data_type'].value_counts(normalize=False))
-    print('Train set length:', len(df_dev), '\n')
+    print('Dev set length:', len(df_dev), '\n')
     print('Test sets:')
     print(df_test['data_type'].value_counts(normalize=False))
-    print('Train set length:', len(df_dev), '\n')
+    print('Test set length:', len(df_test), '\n')
 
     print('######################################')
     display(df_train[:10])
@@ -524,21 +523,26 @@ for j in range(24, 25):
 
     # %% Loop
 
-    for model_name in model_name_list[9:10]:
+    for model_name in model_name_list[12:13]:
         for i in range(5):
-            
+
             # Filename bits
-            metrics_path_category = '/home/pgajo/working/data/metrics/1_hate_speech'
-            # metrics_path_category = '/home/pgajo/working/data/metrics/2_racism+misogyny'
+            # metrics_path_category = '/home/pgajo/working/data/metrics/1_hate_speech'
+            metrics_path_category = '/home/pgajo/working/data/metrics/2_1_misogyny'
+            # metrics_path_category = '/home/pgajo/working/data/metrics/2_2_racism'
             # metrics_path_category = '/home/pgajo/working/data/metrics/3_hate_forecasting'
 
             index = model_name_list.index(model_name)
             if index > 8:
                 multilingual = 1
                 metrics_save_path = f'{metrics_path_category}/metrics_multilingual/'
+                if not os.path.exists(metrics_save_path):
+                    os.mkdir(metrics_save_path)
             else:
                 multilingual = 0
                 metrics_save_path = f'{metrics_path_category}/metrics_monolingual/'
+                if not os.path.exists(metrics_save_path):
+                    os.mkdir(metrics_save_path)
             
             model_name_simple = model_name.split('/')[-1]
             
@@ -580,7 +584,7 @@ for j in range(24, 25):
                 print(model.config)
 
             # Data pre-processing
-            print('################', df_train.text.values[0])
+            display(df_test)
             # Encode the training data using the tokenizer
             encoded_data_train = tokenizer.batch_encode_plus(
                 [el for el in tqdm(df_train.text.values)],
@@ -615,15 +619,15 @@ for j in range(24, 25):
             # Extract IDs, attention masks and labels from training dataset
             input_ids_train = encoded_data_train['input_ids']
             attention_masks_train = encoded_data_train['attention_mask']
-            labels_train = torch.tensor(df_train.hs.values)
+            labels_train = torch.tensor(df_train.racist.values)
             # Extract IDs, attention masks and labels from validation dataset
             input_ids_val = encoded_data_val['input_ids']
             attention_masks_val = encoded_data_val['attention_mask']
-            labels_val = torch.tensor(df_dev.hs.values)
+            labels_val = torch.tensor(df_dev.racist.values)
             # Extract IDs, attention masks and labels from test dataset
             input_ids_test = encoded_data_test['input_ids']
             attention_masks_test = encoded_data_test['attention_mask']
-            labels_test = torch.tensor(df_test.hs.values)
+            labels_test = torch.tensor(df_test.racist.values)
 
             # # Model setup
             epochs = 4  # number of epochs
