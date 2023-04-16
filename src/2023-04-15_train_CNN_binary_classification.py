@@ -1,26 +1,32 @@
-# %% [markdown]
-# Load dependencies
-# used to make train/dev/test partitions
-from sklearn.model_selection import train_test_split
-from typing import Dict
-from sklearn.metrics import precision_recall_fscore_support
-import torch.nn as nn
-from torch.optim import AdamW
-from torch.utils.data import Dataset
-from transformers import Trainer, TrainingArguments
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
-import json
+
+# %% Load dependencies
+
 import pandas as pd
 import numpy as np
-from tqdm.auto import tqdm
+from tqdm import tqdm
 from IPython.display import clear_output, display
 from sklearn.model_selection import train_test_split
+from transformers import BertTokenizer, TFBertModel, BertPreTrainedModel, BertModel, BertForSequenceClassification, AdamW, get_linear_schedule_with_warmup
 import torch
 from sklearn.metrics import classification_report, f1_score, accuracy_score, precision_score, recall_score, log_loss
+from torch.utils.data import TensorDataset, Dataset, DataLoader, RandomSampler, SequentialSampler
 import random
 import os
-# import csv
+import csv
 from pgfuncs import tokenize_and_vectorize, pad_trunc, collect_expected, tokenize_and_vectorize_1dlist, collect_expected_1dlist, df_classification_report
+
+# Keras imports
+import keras_tuner as kt
+from keras.optimizers import Adam
+from keras_tuner.tuners import Hyperband
+import json
+
+from keras import backend as K
+from keras.models import Sequential  # Base Keras NN model
+# Convolution layer and pooling
+from keras.layers import Conv1D, GlobalMaxPooling1D, Dense, Dropout, Activation, MaxPooling1D, Flatten
+from keras.callbacks import TensorBoard, EarlyStopping, ModelCheckpoint
+import matplotlib.pyplot as plt
 
 from datetime import datetime
 # timestamp for file naming
@@ -28,14 +34,105 @@ now = datetime.now()
 time_str = now.strftime("%Y-%m-%d_%H-%M-%S")
 date_str = now.strftime("%Y-%m-%d")
 
+# %% Keras Tuner function definitions
 
-def set_seeds(seed_value=42):
-    random.seed(seed_value)
-    np.random.seed(seed_value)
-    torch.manual_seed(seed_value)
-    torch.cuda.manual_seed_all(seed_value)
-    torch.backends.cudnn.deterministic = True
-    torch.backends.cudnn.benchmark = False
+# Functions used for evaluation metrics
+
+def recall_m(y_true, y_pred):
+    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    possible_positives = K.sum(K.round(K.clip(y_true, 0, 1)))
+    recall = true_positives / (possible_positives + K.epsilon())
+    return recall
+
+
+def precision_m(y_true, y_pred):
+    true_positives = K.sum(K.round(K.clip(y_true * y_pred, 0, 1)))
+    predicted_positives = K.sum(K.round(K.clip(y_pred, 0, 1)))
+    precision = true_positives / (predicted_positives + K.epsilon())
+    return precision
+
+
+def f1_m(y_true, y_pred):
+    precision = precision_m(y_true, y_pred)
+    recall = recall_m(y_true, y_pred)
+    return 2*((precision*recall)/(precision+recall+K.epsilon()))
+
+# Keras Tuner functions
+
+def build_loaded_hypermodel(hp):  # to use with json config
+    # Loss functions: binary_crossentropy
+    hp_loss = best_hps['values']['loss_function']
+    # Kernel sizes: from 1 to 5
+    hp_kernel = best_hps['values']['kernel_size']
+    # Number of filters: from 50 to 250, with a step of 25 (e.g. it can be 75, 100 etc.)
+    hp_filters = best_hps['values']['conv_filters']
+    # Learning rates for the optimizer: 0.002, 0.001, 0.0001
+    hp_learning_rate = best_hps['values']['adam_learning_rate']
+    # Number of units in the Dense layer: from 32 to 512, with a step of 32
+    hp_dense_units = best_hps['values']['dense_units']
+    # Dropout value: 0.05, 0.1, 0.2, 0.3
+    hp_dropout = best_hps['values']['dropout_value']
+    # Intermediate layers: from 1 to 3 sections of Dense layers with Dropout
+    hp_layers = best_hps['values']['num_intermediate_layers']
+
+    model_hp = Sequential()
+    model_hp.add(Conv1D(filters=hp_filters, kernel_size=hp_kernel, padding='same',
+                    activation='relu', strides=1, input_shape=(maxlen, embedding_dims)))
+    model_hp.add(GlobalMaxPooling1D())
+
+    for i in range(hp_layers):
+        model_hp.add(Dense(units=hp_dense_units, activation='relu'))
+        model_hp.add(Dropout(hp_dropout))
+
+    model_hp.add(Activation('relu'))
+    model_hp.add(Dense(1, activation='sigmoid'))
+    # model_hp.add(Dense(1,activation=hp_output_activation)) # for regression with raw relu and squeezed into sigmoid
+
+    model_hp.compile(optimizer=Adam(learning_rate=hp_learning_rate),
+                        loss=hp_loss, metrics=['acc', f1_m, precision_m, recall_m])
+
+    return model_hp
+
+# Defining the hyperparameters to explore, based on the CNN from before
+
+def build_hypermodel(hp):
+    # Loss functions: binary_crossentropy
+    hp_loss = hp.Choice('loss_function', values=['binary_crossentropy'])
+    # Kernel sizes: from 1 to 3
+    hp_kernel = hp.Choice('kernel_size', values=[1, 2, 3, 4, 5])
+    # Number of filters: from 50 to 250, with a step of 25 (e.g. it can be 75, 100 etc.)
+    hp_filters = hp.Int('conv_filters', min_value=50, max_value=250, step=25)
+    # Learning rates for the optimizer: 0.002, 0.001, 0.0001
+    hp_learning_rate = hp.Choice(
+        'adam_learning_rate', values=[0.002, 0.001, 0.0001])
+    # Number of units in the Dense layer: from 32 to 512, with a step of 32
+    hp_dense_units = hp.Int('dense_units', min_value=32,
+                            max_value=512, step=32)
+    # Dropout value: 0.05, 0.1, 0.2, 0.3
+    hp_dropout = hp.Choice('dropout_value', values=[0.05, 0.1, 0.2, 0.3])
+    # Intermediate layers: from 1 to 3 sections of Dense layers with Dropout
+    hp_layers = hp.Int('num_intermediate_layers', 1, 3)
+
+    model_hp = Sequential()
+    model_hp.add(Conv1D(filters=hp_filters, kernel_size=hp_kernel, padding='same',
+                    activation='relu', strides=1, input_shape=(maxlen, embedding_dims)))
+    model_hp.add(GlobalMaxPooling1D())
+
+    for i in range(hp_layers):
+        model_hp.add(Dense(units=hp_dense_units, activation='relu'))
+        model_hp.add(Dropout(hp_dropout))
+
+    model_hp.add(Activation('relu'))
+    model_hp.add(Dense(1, activation='sigmoid'))
+
+    model_hp.compile(optimizer=Adam(learning_rate=hp_learning_rate),
+                        loss=hp_loss, metrics=['acc', f1_m, precision_m, recall_m])
+
+    return model_hp
+
+# Load the pre-trained word2vec model
+from gensim.models.word2vec import Word2Vec
+w2v_model = Word2Vec.load('/home/pgajo/working/VSM_incels.is/2023-02-08_W2V_IFC-22-en.model')
 
 # %% Load data
 
@@ -351,7 +448,12 @@ print('evalita20 full train set size:', len(df_train_evalita20))
 
 # %% Dataset combination choice
 
-for j in range(17, 18):
+for j in range(0, 1):
+    # reset time
+    now = datetime.now()
+    time_str = now.strftime("%Y-%m-%d_%H-%M-%S")
+    date_str = now.strftime("%Y-%m-%d")
+
     metrics_id = j
 
     # %% Dataset combinations
@@ -486,338 +588,263 @@ for j in range(17, 18):
     print(df_test['data_type'].value_counts(normalize=False))
     print('Test set length:', len(df_test), '\n')
 
+    # %% Text pre-processing
+    # NN input settings for vectorization
+    maxlen = 100
+    embedding_dims = 300
+    # Vectorize train/dev/test sets
+
+    target_label_list = ['hs', 'misogynous', 'racist']
+    target_label = target_label_list[1]
+
+    print('train')
+    x_train = tokenize_and_vectorize_1dlist(df_train['text'], w2v_model.wv)
+    x_train = pad_trunc(x_train, maxlen)
+    x_train = np.reshape(x_train, (len(x_train), maxlen, embedding_dims))
+    y_train = np.array(df_train[target_label])
+    print('dev')
+    x_dev = tokenize_and_vectorize_1dlist(df_dev['text'], w2v_model.wv)
+    x_dev = pad_trunc(x_dev, maxlen)
+    x_dev = np.reshape(x_dev, (len(x_dev), maxlen, embedding_dims))
+    y_dev = np.array(df_dev[target_label])
+    print('test')
+    x_test = tokenize_and_vectorize_1dlist(df_test['text'], w2v_model.wv)
+    x_test = pad_trunc(x_test, maxlen)
+    x_test = np.reshape(x_test, (len(x_test), maxlen, embedding_dims))
+    y_test = np.array(df_test[target_label])
+    print('done')
+
     # %% Model choice
+    model_name_simple = 'CNN'
 
-    model_name_list = [
-        # monolingual models
-        'bert-base-uncased',  # 0
-        'roberta-base',  # 1
-        '/home/pgajo/working/pt_models/HateBERT',  # 2
-        # 'Hate-speech-CNERG/bert-base-uncased-hatexplain',
-        '/home/pgajo/working/pt_models/incel-bert-base-uncased-10k_english',  # 3
-        '/home/pgajo/working/pt_models/incel-bert-base-uncased-100k_english',  # 4
-        '/home/pgajo/working/pt_models/incel-bert-base-uncased-1000k_english',  # 5
-        '/home/pgajo/working/pt_models/incel-roberta-base-10k_english',  # 6
-        '/home/pgajo/working/pt_models/incel-roberta-base-100k_english',  # 7
-        '/home/pgajo/working/pt_models/incel-roberta-base-1000k_english',  # 8
+    # Filename bits
+    if target_label == 'hs':
+        metrics_path_category = '/home/pgajo/working/data/metrics/1_hate_speech'
+    elif target_label == 'misogynous':
+        metrics_path_category = '/home/pgajo/working/data/metrics/2_1_misogyny'
+    elif target_label == 'racist':
+        metrics_path_category = '/home/pgajo/working/data/metrics/2_2_racism'
+    # metrics_path_category = '/home/pgajo/working/data/metrics/3_hate_forecasting'
 
-        # multilingual models
-        'bert-base-multilingual-cased',  # 9
-        # '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-10k_multi',  # 10
-        # '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-100k_multi',  # 11
-        '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-1000k_multi',  # 12
-    ]
+    if metrics_id > 16:
+        multilingual = 1
+        metrics_save_path = f'{metrics_path_category}/metrics_multilingual/'
+        if not os.path.exists(metrics_save_path):
+            os.mkdir(metrics_save_path)
+    else:
+        multilingual = 0
+        metrics_save_path = f'{metrics_path_category}/metrics_monolingual/'
+        if not os.path.exists(metrics_save_path):
+            os.mkdir(metrics_save_path)
+    
+    metrics_save_path_model = os.path.join(metrics_save_path, model_name_simple)
+    print(metrics_save_path_model)
+    # metrics_save_path_model = metrics_save_path + model_name_simple
 
-    # model_name = model_name_list[0:6]
+    if not os.path.exists(metrics_save_path_model):
+        os.mkdir(metrics_save_path_model)
+    
+    print('\n#####################################################\n',
+        metrics_save_path_model,
+        '\n#####################################################\n')
 
-    # %% Loop
+    # make unique filepath
+    metrics_filename = str(metrics_id)+'_' + \
+        model_name_simple+'_'+time_str+'_metrics.csv'
+    metrics_csv_filepath = os.path.join(
+        metrics_save_path_model, metrics_filename)
+    print(metrics_csv_filepath)
 
-    for model_name in model_name_list[9:12]:
-        for i in range(5):
+    threshold = 0.5
 
-            # Filename bits
-            metrics_path_category = '/home/pgajo/working/data/metrics/1_hate_speech'
-            # metrics_path_category = '/home/pgajo/working/data/metrics/2_1_misogyny'
-            # metrics_path_category = '/home/pgajo/working/data/metrics/2_2_racism'
-            # metrics_path_category = '/home/pgajo/working/data/metrics/3_hate_forecasting'
+    # # Defining the hyperparameters to explore, based on the CNN from before
 
-            index = model_name_list.index(model_name)
-            if index > 8:
-                multilingual = 1
-                metrics_save_path = f'{metrics_path_category}/metrics_multilingual/'
-                if not os.path.exists(metrics_save_path):
-                    os.mkdir(metrics_save_path)
-            else:
-                multilingual = 0
-                metrics_save_path = f'{metrics_path_category}/metrics_monolingual/'
-                if not os.path.exists(metrics_save_path):
-                    os.mkdir(metrics_save_path)
-            
-            model_name_simple = model_name.split('/')[-1]
-            
-            metrics_save_path_model = os.path.join(metrics_save_path, model_name_simple)
-            print(metrics_save_path_model)
-            # metrics_save_path_model = metrics_save_path + model_name_simple
-
-            if not os.path.exists(metrics_save_path_model):
-                os.mkdir(metrics_save_path_model)
-            
-            print('\n#####################################################\n',
-                metrics_save_path_model,
-                '\n#####################################################\n')
-
-            # set new seed for new run
-            set_seeds(seed_value=i)
-
-            # reset time
-            now = datetime.now()
-            time_str = now.strftime("%Y-%m-%d_%H-%M-%S")
-            date_str = now.strftime("%Y-%m-%d")
-
-            # make unique filepath
-            metrics_filename = str(metrics_id)+'_' + \
-                model_name_simple+'_'+time_str+'_metrics.csv'
-            metrics_csv_filepath = os.path.join(
-                metrics_save_path_model, metrics_filename)
-            print(metrics_csv_filepath)
-
-            # get tokenizer and model
-            tokenizer = AutoTokenizer.from_pretrained(model_name)
-            model = AutoModelForSequenceClassification.from_pretrained(model_name)
-
-            # hatexplain needs modified output layer
-            if model_name == 'Hate-speech-CNERG/bert-base-uncased-hatexplain':
-                model.classifier = nn.Linear(model.config.hidden_size, 2)
-                model.num_labels = 2
-                print(model.eval())
-                print(model.config)
-
-            # Data pre-processing
-            display(df_test)
-            # Encode the training data using the tokenizer
-            encoded_data_train = tokenizer.batch_encode_plus(
-                [el for el in tqdm(df_train.text.values)],
-                add_special_tokens=True,
-                return_attention_mask=True,
-                padding='max_length',  # change pad_to_max_length to padding
-                max_length=256,
-                truncation=True,  # add truncation
-                return_tensors='pt'
-            )
-
-            encoded_data_val = tokenizer.batch_encode_plus(
-                [el for el in tqdm(df_dev.text.values)],
-                add_special_tokens=True,
-                return_attention_mask=True,
-                padding='max_length',  # change pad_to_max_length to padding
-                max_length=256,
-                truncation=True,  # add truncation
-                return_tensors='pt'
-            )
-
-            encoded_data_test = tokenizer.batch_encode_plus(
-                [el for el in tqdm(df_test.text.values)],
-                add_special_tokens=True,
-                return_attention_mask=True,
-                padding='max_length',  # change pad_to_max_length to padding
-                max_length=256,
-                truncation=True,  # add truncation
-                return_tensors='pt'
-            )
-
-            # Extract IDs, attention masks and labels from training dataset
-            input_ids_train = encoded_data_train['input_ids']
-            attention_masks_train = encoded_data_train['attention_mask']
-            labels_train = torch.tensor(df_train.hs.values)
-            # Extract IDs, attention masks and labels from validation dataset
-            input_ids_val = encoded_data_val['input_ids']
-            attention_masks_val = encoded_data_val['attention_mask']
-            labels_val = torch.tensor(df_dev.hs.values)
-            # Extract IDs, attention masks and labels from test dataset
-            input_ids_test = encoded_data_test['input_ids']
-            attention_masks_test = encoded_data_test['attention_mask']
-            labels_test = torch.tensor(df_test.hs.values)
-
-            # # Model setup
-            epochs = 4  # number of epochs
-            # Define the size of each batch
-            batch_size = 8  # number of examples to include in each batch
-
-            # convert my train/dev/test pandas dataframes to huggingface-compatible datasets
-            class CustomDataset(Dataset):
-                def __init__(self, input_ids, attention_masks, labels):
-                    self.input_ids = input_ids
-                    self.attention_masks = attention_masks
-                    self.labels = labels
-
-                def __len__(self):
-                    return len(self.input_ids)
-
-                def __getitem__(self, idx):
-                    return {'input_ids': self.input_ids[idx], 'attention_mask': self.attention_masks[idx], 'labels': self.labels[idx]}
-
-            # make initial empty metrics dataframe
-            df_metrics = pd.DataFrame(columns=['epoch', 'loss_train', 'eval_loss', 'eval_f1',
-                                    'eval_prec', 'eval_rec', 'test_loss', 'test_f1', 'test_prec', 'test_rec'])
-
-            # custom compute metrics function
-            def compute_metrics(eval_pred, metric_key_prefix="eval"):
-                predictions, labels = eval_pred
-                predictions = np.argmax(predictions, axis=1)
-                precision, recall, f1, _ = precision_recall_fscore_support(
-                    labels, predictions, average='binary')
-
-                return {
-                    f'{metric_key_prefix}_prec': precision,
-                    f'{metric_key_prefix}_rec': recall,
-                    f'{metric_key_prefix}_f1': f1
-                }
-
-            # Create the custom dataset instances
-            train_dataset = CustomDataset(
-                input_ids_train, attention_masks_train, labels_train)
-            val_dataset = CustomDataset(
-                input_ids_val, attention_masks_val, labels_val)
-            test_dataset = CustomDataset(
-                input_ids_test, attention_masks_test, labels_test)
-
-            # write set identifiers for the pandas metrics dataframe
-            df_metrics_train_set_string = ''
-            for i, index in enumerate(df_train['data_type'].value_counts(normalize=False).index.to_list()):
-                set_len = df_train['data_type'].value_counts(
-                    normalize=False).values[i]
-                df_metrics_train_set_string += index+'('+str(set_len)+')'+'\n'
-
-            df_metrics_dev_set_string = ''
-            for i, index in enumerate(df_dev['data_type'].value_counts(normalize=False).index.to_list()):
-                set_len = df_dev['data_type'].value_counts(
-                    normalize=False).values[i]
-                df_metrics_dev_set_string += index+'('+str(set_len)+')'+'\n'
-
-            df_metrics_test_set_string = ''
-            for i, index in enumerate(df_test['data_type'].value_counts(normalize=False).index.to_list()):
-                set_len = df_test['data_type'].value_counts(
-                    normalize=False).values[i]
-                df_metrics_test_set_string += index+'('+str(set_len)+')'+'\n'
-
-            # extend the huggingface Trainer class to make custom methods
-            class CustomTrainer(Trainer):
-                def evaluate(self, eval_dataset=None, ignore_keys=None):
-                    val_output = self.predict(val_dataset)
-                    test_output = self.predict(test_dataset)
-                    val_metrics = compute_metrics(
-                        (val_output.predictions, val_output.label_ids), metric_key_prefix="val")
-                    test_metrics = compute_metrics(
-                        (test_output.predictions, test_output.label_ids), metric_key_prefix="test")
-                    df_metrics = pd.DataFrame(columns=[
-                                            'epoch', 'val_f1', 'val_prec', 'val_rec', 'test_f1', 'test_prec', 'test_rec'])
-                    if self.state.epoch == None:
-                        current_epoch = -1
-                    else:
-                        current_epoch = self.state.epoch
-                    df_metrics = df_metrics.append({
-                        'epoch': current_epoch, # self.state.epoch,
-                        'val_f1': val_metrics['val_f1'],
-                        'val_prec': val_metrics['val_prec'],
-                        'val_rec': val_metrics['val_rec'],
-                        'test_f1': test_metrics['test_f1'],
-                        'test_prec': test_metrics['test_prec'],
-                        'test_rec': test_metrics['test_rec'],
-                    }, ignore_index=True)
-
-                    df_metrics['model'] = model_name_simple
-                    df_metrics['train_len'] = str(len(df_train))
-                    df_metrics['train_set(s)'] = df_metrics_train_set_string[:-1]
-                    df_metrics['dev_set(s)'] = df_metrics_dev_set_string[:-1]
-                    df_metrics['test_set(s)'] = df_metrics_test_set_string[:-1]
-                    df_metrics['run_id'] = metrics_id
-
-                    # make unique filepath
-                    metrics_filename = str(metrics_id)+'_' + \
-                        model_name_simple+'_'+time_str+'_metrics.csv'
-                    metrics_csv_filepath = os.path.join(
-                        metrics_save_path_model, metrics_filename)
-                    print(metrics_csv_filepath)
-
-                    # Save test metrics to CSV
-                    if not os.path.exists(metrics_csv_filepath):
-                        df_metrics.to_csv(metrics_csv_filepath, index=False)
-                    else:
-                        df_metrics.to_csv(metrics_csv_filepath,
-                                        mode='a', header=False, index=False)
-
-                    return val_metrics
-
-                def log(self, logs: Dict[str, float]):
-                    # Call the original `log` method to preserve its functionality
-                    super().log(logs)
-
-                    # Calculate total steps
-                    total_steps = len(
-                        self.train_dataset) * self.args.num_train_epochs // self.args.per_device_train_batch_size
-                    if self.args.world_size > 1:
-                        total_steps = total_steps // self.args.world_size
-
-                    # Calculate the percentage of completed steps
-                    progress_percentage = 100 * self.state.global_step / total_steps
-
-                    # Print the custom message
-                    print("Global step:", self.state.global_step)
-                    print(
-                        f"Progress: {progress_percentage:.2f}% steps completed ({self.state.global_step}/{total_steps})")
-                    print(f"Current model: {model_name_simple}")
-                    print(f"Current run id: {metrics_id}")
-
-            # Define training arguments
-            training_args = TrainingArguments(
-                output_dir='./results',           # Output directory for model and predictions
-                num_train_epochs=epochs,          # Number of epochs
-                # Batch size per device during training
-                per_device_train_batch_size=batch_size,
-                # Batch size per device during evaluation
-                per_device_eval_batch_size=batch_size,
-                warmup_steps=0,                  # Linear warmup over warmup_steps
-                weight_decay=0.01,               # Weight decay
-                logging_dir='./logs',            # Directory for storing logs
-                logging_steps=100,               # Log every X updates steps
-                evaluation_strategy='epoch',     # Evaluate every epoch
-                save_strategy='no',              # Do not save checkpoint after each epoch
-                # load_best_model_at_end=True,     # Load the best model when finished training (best on dev set)
-                metric_for_best_model='f1',      # Use f1 score to determine the best model
-                greater_is_better=True,           # The higher the f1 score, the better
-            )
-
-            # define optimizer
-            optimizer = AdamW(
-                model.parameters(),
-                lr=2e-5,
-                eps=1e-8,
-            )
-
-            # instantiate trainer
-            trainer = CustomTrainer(
-                model=model,
-                args=training_args,
-                train_dataset=train_dataset,
-                eval_dataset=val_dataset,
-                compute_metrics=compute_metrics,
-                # pass the new optimizer to the trainer
-                optimizers=(optimizer, None),
-            )
-
-            # # get random init prediction metrics
-            # metrics_id_buffer = metrics_id
-            # metrics_id = -1
-            # for k in range(9000, 9010):
-            #     set_seeds(seed_value=k)  # set random seed
-                
-            #     # get tokenizer and model
-            #     tokenizer = AutoTokenizer.from_pretrained(model_name)
-            #     model = AutoModelForSequenceClassification.from_pretrained(model_name)
-
-            #     # hatexplain needs modified output layer
-            #     if model_name == 'Hate-speech-CNERG/bert-base-uncased-hatexplain':
-            #         model.classifier = nn.Linear(model.config.hidden_size, 2)
-            #         model.num_labels = 2
-            #         print(model.eval())
-            #         print(model.config)
-
-            #     # instantiate trainer with the new model
-            #     trainer = CustomTrainer(
-            #         model=model,
-            #         args=training_args,
-            #         train_dataset=train_dataset,
-            #         eval_dataset=val_dataset,
-            #         compute_metrics=compute_metrics,
-            #         # pass the new optimizer to the trainer
-            #         optimizers=(optimizer, None),
-            #     )
-
-            #     trainer.evaluate()
-            # metrics_id = metrics_id_buffer
+    # # Load the hyperparameters from file
+    # with open(r'C:\Users\Paolo\My Drive\UNI_Google_Drive\NLP_Google_Drive\incels_2022-2023\best_models\CNN\hate_speech\2023-02-16_best_hyperparameters_CNN_incelsis.json', 'r') as f:
+    #     best_hps = json.load(f)
+    #     # best_hps=best_hps['values']
+    # print(*["{}: {}".format(k, v) for k, v in best_hps.items()], sep="\n")
 
 
-            # Train the model
-            trainer.train()
+    # Define hyperparameter object
+    hp = kt.HyperParameters() # Hyperparameters object
 
-# %%
+    # Hyperband is one of the optimization algorithms provided by Keras Tuner
+
+    tuner = Hyperband(build_hypermodel,  # change this if you are using new tuned hyperparameters or if you're loading from json
+                    # Objective to maximize
+                    objective=kt.Objective('val_acc', direction='max'),
+                    executions_per_trial=5,  # Number of models that should be built and fit for each trial
+                    hyperband_iterations=1,  # The number of times the Hyperband algorithm is iterated over
+                    max_epochs=10,
+                    directory=os.path.normpath(date_str+'kt'),
+                    project_name="keras_tuner_project",
+                    overwrite=True)
+
+    tuner.search(x_train, y_train, batch_size=128,  # Batch size -> another parameter that can be explored
+                epochs=10,
+                validation_data=(x_dev, y_dev),
+                # Patience -> number of epochs with no improvement after which training will be stopped; I set it a bit higher to explore more configurations
+                callbacks=[EarlyStopping('val_loss', patience=3)],
+                verbose=2)
+
+
+    # Train CNN model with optimal HPs
+
+    # Get the optimal hyperparameters
+    best_hps = tuner.get_best_hyperparameters(1)[0]
+
+    # Get the best model
+    best_model = tuner.get_best_models(1)[0]
+
+    # Show model summary
+    best_model.summary()
+
+
+    # Training loop
+
+    # write set identifiers for the pandas metrics dataframe
+    df_metrics_train_set_string = ''
+    for i, index in enumerate(df_train['data_type'].value_counts(normalize=False).index.to_list()):
+        set_len = df_train['data_type'].value_counts(normalize=False).values[i]
+        df_metrics_train_set_string += index+'('+str(set_len)+')'+'\n'
+
+    df_metrics_dev_set_string = ''
+    for i, index in enumerate(df_dev['data_type'].value_counts(normalize=False).index.to_list()):
+        set_len = df_dev['data_type'].value_counts(normalize=False).values[i]
+        df_metrics_dev_set_string += index+'('+str(set_len)+')'+'\n'
+
+    df_metrics_test_set_string = ''
+    for i, index in enumerate(df_test['data_type'].value_counts(normalize=False).index.to_list()):
+        set_len = df_test['data_type'].value_counts(normalize=False).values[i]
+        df_metrics_test_set_string += index+'('+str(set_len)+')'+'\n'
+
+    # train
+    print('Run ID:', metrics_id)
+    print('Train sets:')
+    print(df_train['data_type'].value_counts(normalize=False))
+    print('Train set length', len(df_train), '\n')
+    print('Dev sets:')
+    print(df_dev['data_type'].value_counts(normalize=False))
+    print('Train set length', len(df_dev), '\n')
+    print('Test sets:')
+    print(df_test['data_type'].value_counts(normalize=False))
+    print('Train set length', len(df_dev), '\n')
+
+    df_metrics = pd.DataFrame(columns=['epoch', 'train_loss', 'val_loss', 'val_f1', 'val_prec',
+                            'val_rec', 'test_loss', 'test_f1', 'test_prec', 'test_rec'])
+
+    epochs = 3
+
+    # Training loop
+    for i in range(5):  # run the loop n times
+
+        model = tuner.hypermodel.build(best_hps)
+
+        # Train the model and get the history object
+        history = model.fit(x_train, y_train,
+                            validation_data=(x_dev, y_dev),
+                            epochs=epochs,
+                            batch_size=128,
+                            verbose=1)
+
+        # Get the validation loss for each epoch
+        train_losses = history.history['loss']
+        train_loss = train_losses[-1]
+        val_losses = history.history['val_loss']
+        val_loss = val_losses[-1]
+
+        # Compute dev metrics
+        pred_dev = [el[0] for el in model.predict(x_dev)]
+        pred_dev = [(el > threshold).astype("int32") for el in pred_dev]
+
+        # Calculate val_loss and dev_accuracy
+        dev_metrics = model.evaluate(x_dev, y_dev, verbose=0)
+        val_loss, dev_accuracy, *_ = dev_metrics
+
+        val_f1 = f1_score(y_dev, pred_dev, average='binary', pos_label=1)
+        val_prec = precision_score(y_dev, pred_dev)
+        val_rec = recall_score(y_dev, pred_dev)
+
+        # Compute test metrics
+        pred_test = [el[0] for el in model.predict(x_test)]
+        pred_test = [(el > threshold).astype("int32") for el in pred_test]
+
+        # Calculate val_loss and dev_accuracy
+        test_metrics = model.evaluate(x_test, y_test, verbose=0)
+        test_loss, test_accuracy, *_ = test_metrics
+
+        test_f1 = f1_score(y_test, pred_test, average='binary', pos_label=1)
+        test_prec = precision_score(y_test, pred_test)
+        test_rec = recall_score(y_test, pred_test)
+
+        df_metrics = df_metrics.append({
+            'epoch': epochs,
+            'train_loss': train_loss,
+            'val_loss': val_loss,
+            'val_f1': val_f1,
+            'val_prec': val_prec,
+            'val_rec': val_rec,
+            'test_loss': test_loss,
+            'test_f1': test_f1,
+            'test_prec': test_prec,
+            'test_rec': test_rec
+        }, ignore_index=True)
+
+        df_metrics['model'] = model_name_simple
+        df_metrics['train_len'] = str(len(df_train))
+        df_metrics['train_set(s)'] = df_metrics_train_set_string[:-1]
+        df_metrics['dev_set(s)'] = df_metrics_dev_set_string[:-1]
+        df_metrics['test_set(s)'] = df_metrics_test_set_string[:-1]
+        df_metrics['run_id'] = metrics_id
+
+        clear_output(wait=True)
+
+        print('Run ID:', metrics_id)
+        print('Train sets:')
+        print(df_train['data_type'].value_counts(normalize=False))
+        print('Train set length:', len(df_train), '\n')
+        print('Dev sets:')
+        print(df_dev['data_type'].value_counts(normalize=False))
+        print('Train set length:', len(df_dev), '\n')
+        print('Test sets:')
+        print(df_test['data_type'].value_counts(normalize=False))
+        print('Train set length:', len(df_dev), '\n')
+
+        display(df_metrics)
+
+    # Calculate the average of the statistics over the 5 training iterations
+    average_metrics = df_metrics.loc[:, 'train_loss':'test_rec'].mean(axis=0)
+
+    # Create a new row with the average statistics
+    average_row = pd.DataFrame(average_metrics).transpose()
+
+    # Set the 'epoch' value to 'average' for the new row
+    average_row['epoch'] = 'average'
+
+    # Copy non-numeric columns from the last row of df_metrics to the average_row
+    non_numeric_columns = ['model', 'train_len',
+                        'train_set(s)', 'dev_set(s)', 'test_set(s)', 'run_id']
+    average_row[non_numeric_columns] = df_metrics.loc[df_metrics.index[-1],
+                                                    non_numeric_columns]
+
+    # Append the average row to the df_metrics DataFrame
+    # df_metrics = df_metrics.append(average_row, ignore_index=True)
+
+    # Display the updated df_metrics DataFrame with the average row
+    display(df_metrics)
+
+    print(metrics_csv_filepath)
+
+    # Save the DataFrame to a CSV file
+    df_metrics.to_csv(metrics_csv_filepath, index=False)
+
+    # Save HPs to json
+
+    with open('_'.join(metrics_csv_filepath.split('_')[:-1])+'_hp.json', 'w') as f:
+        json.dump(tuner.get_best_hyperparameters(1)[0].get_config(), f)
+
+
+
+
+
