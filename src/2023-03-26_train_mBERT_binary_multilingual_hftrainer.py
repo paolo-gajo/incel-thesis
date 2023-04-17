@@ -351,7 +351,7 @@ print('evalita20 full train set size:', len(df_train_evalita20))
 
 # %% Dataset combination choice
 
-for j in range(17, 18):
+for j in range(0, 1):
     metrics_id = j
 
     # %% Dataset combinations
@@ -512,8 +512,8 @@ for j in range(17, 18):
 
     # %% Loop
 
-    for model_name in model_name_list[9:12]:
-        for i in range(5):
+    for model_name in model_name_list[5:6]:
+        for i in range():
 
             # Filename bits
             metrics_path_category = '/home/pgajo/working/data/metrics/1_hate_speech'
@@ -819,5 +819,3 @@ for j in range(17, 18):
 
             # Train the model
             trainer.train()
-
-# %%

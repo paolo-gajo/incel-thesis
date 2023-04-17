@@ -1,8 +1,10 @@
-\begin{tabular}{rrlrrrrrrrr}
-\toprule
- ID &  Epoch &                Model &  Val F1 &  Val F1 St.Dev &  Val Rec &  Val Prec &  Test F1 &  Test F1 St.Dev &  Test Rec &  Test Prec \\
-\midrule
- 17 &      4 & Incel mBERT 1M IT-EN &   0.773 &          0.008 &    0.757 &     0.790 &    0.552 &           0.049 &     0.404 &      0.886 \\
- 17 &      4 &           mBERT base &   0.764 &          0.022 &    0.749 &     0.781 &    0.214 &           0.102 &     0.127 &      0.813 \\
-\bottomrule
+\begin{tabular}{rl|cccc|cccc}
+    \hline
+                  &                    &  \multicolumn{4}{c|}{Validation}              & \multicolumn{4}{c}{Test} \\
+    \hline
+            Epoch &              Model &      F1 &      St.Dev &   Rec & Prec &       F1 &       St.Dev &  Rec   &  Prec \\
+    \hline
+  4 & Incel mBERT 1M IT-EN &   0.773 &          0.008 &    0.757 &     0.790 &    0.552 &           0.049 &     0.404 &      0.886 \\
+  4 &           mBERT base &   0.764 &          0.022 &    0.749 &     0.781 &    0.214 &           0.102 &     0.127 &      0.813 \\
+\hline
 \end{tabular}

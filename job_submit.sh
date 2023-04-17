@@ -1,5 +1,5 @@
 #!/bin/sh
-#SBATCH -J BERT_train
+#SBATCH -J BERT_label
 #SBATCH -p local
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=8
@@ -11,4 +11,4 @@
 #SBATCH --mail-user=paolo.gajo@gmail.com
 
 cd /home/pgajo/working/src
-pipenv run python /home/pgajo/working/src/2023-03-26_train_mBERT_binary_multilingual_hftrainer.py
+pipenv run python /home/pgajo/working/src/label_corpus_wBERT.py

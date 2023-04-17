@@ -1,9 +1,11 @@
-\begin{tabular}{rrlrrrrrrrr}
-\toprule
- ID &  Epoch &         Model &  Val F1 &  Val F1 St.Dev &  Val Rec &  Val Prec &  Test F1 &  Test F1 St.Dev &  Test Rec &  Test Prec \\
-\midrule
-  0 &      1 & Incel BERT 1M &   0.854 &          0.012 &    0.838 &     0.872 &    0.821 &           0.012 &     0.818 &      0.823 \\
-  0 &      4 &     BERT base &   0.831 &          0.006 &    0.874 &     0.791 &    0.796 &           0.012 &     0.838 &      0.759 \\
-  0 &      3 &           CNN &   0.810 &          0.015 &    0.814 &     0.808 &    0.736 &           0.024 &     0.782 &      0.699 \\
-\bottomrule
+\begin{tabular}{rl|cccc|cccc}
+  \hline
+                &                    &  \multicolumn{4}{c|}{Validation}              & \multicolumn{4}{c}{Test} \\
+  \hline
+          Epoch &              Model &      F1 &      St.Dev &   Rec & Prec &       F1 &       St.Dev &  Rec   &  Prec \\
+  \hline
+      1 & Incel BERT 1M &   0.854 &          0.012 &    0.838 &     0.872 &    0.821 &           0.012 &     0.818 &      0.823 \\
+      4 &     BERT base &   0.831 &          0.006 &    0.874 &     0.791 &    0.796 &           0.012 &     0.838 &      0.759 \\
+      3 &           CNN &   0.810 &          0.015 &    0.814 &     0.808 &    0.736 &           0.024 &     0.782 &      0.699 \\
+  \hline
 \end{tabular}
