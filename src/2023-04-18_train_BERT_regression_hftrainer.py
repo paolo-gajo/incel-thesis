@@ -54,8 +54,19 @@ print('Incels.is scores train set size:', len(df_train))
 print('Incels.is scores dev set size:', len(df_dev))
 print('Incels.is scores test set size:', len(df_test))
 
+# load fdb_500 dataset
+df_fdb_500 = pd.read_csv(
+    '/home/pgajo/working/data/datasets/Italian/Il_forum_dei_brutti/IFD-IT-500.csv')
+df_fdb_500 = df_fdb_500[['hs', 'misogynous', 'racist', 'text']]
+df_fdb_500
+df_fdb_500['data_type'] = 'test_fdb_500'
+
+print('Forum dei brutti test set size:', len(df_fdb_500))
+
+df_test = df_fdb_500
+
 # %% Model choice
-model_name = '/home/pgajo/working/pt_models/incel-bert-base-uncased-1000k_english'
+model_name = '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-1000k_multi'
 
 # Filename bits
 # metrics_path_category = '/home/pgajo/working/data/metrics/1_hate_speech'
@@ -63,8 +74,8 @@ model_name = '/home/pgajo/working/pt_models/incel-bert-base-uncased-1000k_englis
 # metrics_path_category = '/home/pgajo/working/data/metrics/2_2_racism'
 metrics_path_category = '/home/pgajo/working/data/metrics/3_hate_forecasting'
 
-# metrics_save_path = f'{metrics_path_category}/metrics_multilingual/'
-metrics_save_path = f'{metrics_path_category}/metrics_monolingual/'
+metrics_save_path = f'{metrics_path_category}/metrics_multilingual/'
+# metrics_save_path = f'{metrics_path_category}/metrics_monolingual/'
 
 model_name_simple = model_name.split('/')[-1]
 

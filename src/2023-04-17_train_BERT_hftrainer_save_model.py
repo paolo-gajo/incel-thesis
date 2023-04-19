@@ -351,7 +351,7 @@ print('evalita20 full train set size:', len(df_train_evalita20))
 
 # %% Dataset combination choice
 
-metrics_id = 23
+metrics_id = 17
 
 # %% Dataset combinations
 
@@ -507,7 +507,7 @@ model_name_list = [
     '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-1000k_multi',  # 13
 ]
 
-model_name = model_name_list[13]
+model_name = model_name_list[10]
 
 # Filename bits
 metrics_path_category = '/home/pgajo/working/data/metrics/1_hate_speech'
@@ -516,7 +516,7 @@ metrics_path_category = '/home/pgajo/working/data/metrics/1_hate_speech'
 # metrics_path_category = '/home/pgajo/working/data/metrics/3_hate_forecasting'
 
 index = model_name_list.index(model_name)
-if index > 8:
+if index > 16:
     multilingual = 1
     metrics_save_path = f'{metrics_path_category}/metrics_multilingual/'
     if not os.path.exists(metrics_save_path):
@@ -675,47 +675,47 @@ for i, index in enumerate(df_test['data_type'].value_counts(normalize=False).ind
 class CustomTrainer(Trainer):
     def evaluate(self, eval_dataset=None, ignore_keys=None):
         val_output = self.predict(val_dataset)
-        # test_output = self.predict(test_dataset)
+        test_output = self.predict(test_dataset)
         val_metrics = compute_metrics(
             (val_output.predictions, val_output.label_ids), metric_key_prefix="val")
-        # test_metrics = compute_metrics(
-        #     (test_output.predictions, test_output.label_ids), metric_key_prefix="test")
-        # df_metrics = pd.DataFrame(columns=[
-        #                         'epoch', 'val_f1', 'val_prec', 'val_rec', 'test_f1', 'test_prec', 'test_rec'])
-        # if self.state.epoch == None:
-        #     current_epoch = -1
-        # else:
-        #     current_epoch = self.state.epoch
-        # df_metrics = df_metrics.append({
-        #     'epoch': current_epoch, # self.state.epoch,
-        #     'val_f1': val_metrics['val_f1'],
-        #     'val_prec': val_metrics['val_prec'],
-        #     'val_rec': val_metrics['val_rec'],
-        #     'test_f1': test_metrics['test_f1'],
-        #     'test_prec': test_metrics['test_prec'],
-        #     'test_rec': test_metrics['test_rec'],
-        # }, ignore_index=True)
+        test_metrics = compute_metrics(
+            (test_output.predictions, test_output.label_ids), metric_key_prefix="test")
+        df_metrics = pd.DataFrame(columns=[
+                                'epoch', 'val_f1', 'val_prec', 'val_rec', 'test_f1', 'test_prec', 'test_rec'])
+        if self.state.epoch == None:
+            current_epoch = -1
+        else:
+            current_epoch = self.state.epoch
+        df_metrics = df_metrics.append({
+            'epoch': current_epoch, # self.state.epoch,
+            'val_f1': val_metrics['val_f1'],
+            'val_prec': val_metrics['val_prec'],
+            'val_rec': val_metrics['val_rec'],
+            'test_f1': test_metrics['test_f1'],
+            'test_prec': test_metrics['test_prec'],
+            'test_rec': test_metrics['test_rec'],
+        }, ignore_index=True)
 
-        # df_metrics['model'] = model_name_simple
-        # df_metrics['train_len'] = str(len(df_train))
-        # df_metrics['train_set(s)'] = df_metrics_train_set_string[:-1]
-        # df_metrics['dev_set(s)'] = df_metrics_dev_set_string[:-1]
-        # df_metrics['test_set(s)'] = df_metrics_test_set_string[:-1]
-        # df_metrics['run_id'] = metrics_id
+        df_metrics['model'] = model_name_simple
+        df_metrics['train_len'] = str(len(df_train))
+        df_metrics['train_set(s)'] = df_metrics_train_set_string[:-1]
+        df_metrics['dev_set(s)'] = df_metrics_dev_set_string[:-1]
+        df_metrics['test_set(s)'] = df_metrics_test_set_string[:-1]
+        df_metrics['run_id'] = metrics_id
 
-        # # make unique filepath
-        # metrics_filename = str(metrics_id)+'_' + \
-        #     model_name_simple+'_'+time_str+'_metrics.csv'
-        # metrics_csv_filepath = os.path.join(
-        #     metrics_save_path_model, metrics_filename)
-        # print(metrics_csv_filepath)
+        # make unique filepath
+        metrics_filename = str(metrics_id)+'_' + \
+            model_name_simple+'_'+time_str+'_metrics.csv'
+        metrics_csv_filepath = os.path.join(
+            metrics_save_path_model, metrics_filename)
+        print(metrics_csv_filepath)
 
-        # # Save test metrics to CSV
-        # if not os.path.exists(metrics_csv_filepath):
-        #     df_metrics.to_csv(metrics_csv_filepath, index=False)
-        # else:
-        #     df_metrics.to_csv(metrics_csv_filepath,
-        #                     mode='a', header=False, index=False)
+        # Save test metrics to CSV
+        if not os.path.exists(metrics_csv_filepath):
+            df_metrics.to_csv(metrics_csv_filepath, index=False)
+        else:
+            df_metrics.to_csv(metrics_csv_filepath,
+                            mode='a', header=False, index=False)
 
         return val_metrics
 
