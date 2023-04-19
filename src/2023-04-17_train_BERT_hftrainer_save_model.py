@@ -351,7 +351,7 @@ print('evalita20 full train set size:', len(df_train_evalita20))
 
 # %% Dataset combination choice
 
-metrics_id = 17
+metrics_id = 23
 
 # %% Dataset combinations
 
@@ -507,7 +507,7 @@ model_name_list = [
     '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-1000k_multi',  # 13
 ]
 
-model_name = model_name_list[10]
+model_name = model_name_list[13]
 
 # Filename bits
 metrics_path_category = '/home/pgajo/working/data/metrics/1_hate_speech'

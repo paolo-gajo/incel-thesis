@@ -38,32 +38,21 @@ def set_seeds(seed_value=42):
 
 # %% Load data
 # load IFC-22-EN_updated_hs_scores_223k dataset
-df_incelsis_scores_223k = pd.read_csv('/home/pgajo/working/data/datasets/English/Incels.is/IFC-22-EN_updated_hs_scores_223k.csv')
-df_incelsis_scores_223k = df_incelsis_scores_223k.fillna('')#[:100]
-# df_incelsis_scores_223k['hs_score'] = df_incelsis_scores_223k['hs_score'].astype(float)
-df_incelsis_scores_223k['hs_score'] = df_incelsis_scores_223k['hs_score'] * 100
+df = pd.read_csv('/home/pgajo/working/data/datasets/Italian/Il_forum_dei_brutti/IFC-22-IT_updated.csv_hs_scores_30k.csv')
+df = df.fillna('') # [:100]
+# df['hs_score'] = df['hs_score'].astype(float)
+df['hs_score'] = df['hs_score'] * 100
 # Split the dataset into train/dev/test
 # Split the data into training and test sets (70% for training, 30% for test)
-df_train, df_test = train_test_split(df_incelsis_scores_223k, test_size=0.3, random_state=42)
+df_train, df_test = train_test_split(df, test_size=0.3, random_state=42)
 
 # Split the test data into validation and test sets (50% for validation, 50% for test)
 df_dev, df_test = train_test_split(df_test, test_size=0.5, random_state=42)
 
 # Print the size of each split
-print('Incels.is scores train set size:', len(df_train))
-print('Incels.is scores dev set size:', len(df_dev))
-print('Incels.is scores test set size:', len(df_test))
-
-# load fdb_500 dataset
-df_fdb_500 = pd.read_csv(
-    '/home/pgajo/working/data/datasets/Italian/Il_forum_dei_brutti/IFD-IT-500.csv')
-df_fdb_500 = df_fdb_500[['hs', 'misogynous', 'racist', 'text']]
-df_fdb_500
-df_fdb_500['data_type'] = 'test_fdb_500'
-
-print('Forum dei brutti test set size:', len(df_fdb_500))
-
-df_test = df_fdb_500
+print('Train set size:', len(df_train))
+print('Dev set size:', len(df_dev))
+print('Test set size:', len(df_test))
 
 # %% Model choice
 model_name = '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-1000k_multi'
@@ -319,7 +308,6 @@ class CustomTrainer(Trainer):
         logits = outputs.get('logits')
         loss_fct = nn.MSELoss()
         loss = loss_fct(logits.squeeze(), labels.squeeze())
-        # print('#############################', loss)
         return (loss, outputs) if return_outputs else loss
 
 # Create a custom loss function for the Trainer
@@ -360,9 +348,6 @@ trainer = CustomTrainer(
     compute_metrics=compute_metrics,
     optimizers=(optimizer, None),
 )
-
-# Train the model
-trainer.train()
 
 model_path = '/home/pgajo/working/pt_models'
 model_name_ft = model_name_simple + '_' + 'finetuned_hs_score'
