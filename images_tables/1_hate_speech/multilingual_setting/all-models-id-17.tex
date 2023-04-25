@@ -1,12 +1,12 @@
-\begin{tabular}{rl|cccc|cccc}
+\begin{tabular}{r|l|cccc|cccc}
     \hline
-                  &                    &  \multicolumn{4}{c|}{Validation}              & \multicolumn{4}{c}{Test} \\
+    \multirow{2}{*}{\rotatebox[origin=c]{0}{Epoch}}               &    \multirow{2}{*}{\rotatebox[origin=c]{0}{Model}}                &  \multicolumn{4}{c|}{Validation}              & \multicolumn{4}{c}{Test} \\
+    \cline{3-10}
+     &               &      F1 &      St.Dev &   Rec & Prec &       F1 &       St.Dev &  Rec   &  Prec \\
     \hline
-            Epoch &              Model &      F1 &      St.Dev &   Rec & Prec &       F1 &       St.Dev &  Rec   &  Prec \\
-    \hline
-    3 &   Incel mBERT 1M IT-EN &   0.856 &          0.007 &    0.900 &     0.818 &    0.551 &           0.055 &     0.416 &      0.838 \\
+    3 &   Incel mBERT 1M &   0.856 &          0.007 &    0.900 &     0.818 &    0.551 &           0.055 &     0.416 &      0.838 \\
     1 &             mBERT base &   0.814 &          0.011 &    0.863 &     0.774 &    0.499 &           0.067 &     0.382 &      0.733 \\
-    4 & Incel mBERT 100k IT-EN &   0.847 &          0.007 &    0.869 &     0.826 &    0.369 &           0.058 &     0.244 &      0.779 \\
-    3 &  Incel mBERT 10k IT-EN &   0.841 &          0.008 &    0.864 &     0.820 &    0.296 &           0.108 &     0.191 &      0.805 \\
+    4 & Incel mBERT 100k &   0.847 &          0.007 &    0.869 &     0.826 &    0.369 &           0.058 &     0.244 &      0.779 \\
+    3 &  Incel mBERT 10k &   0.841 &          0.008 &    0.864 &     0.820 &    0.296 &           0.108 &     0.191 &      0.805 \\
  \hline
 \end{tabular}

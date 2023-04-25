@@ -351,7 +351,7 @@ print('evalita20 full train set size:', len(df_train_evalita20))
 
 # %% Dataset combination choice
 
-for j in range(0, 1):
+for j in range(26, 27):
     metrics_id = j
 
     # %% Dataset combinations
@@ -386,6 +386,7 @@ for j in range(0, 1):
         ['train_incelsis_5203+train_evalita18facebook+train_evalita18twitter', 'dev_incelsis_5203', 'test_fdb_500'],  # 23
         ['train_incelsis_5203+train_evalita20', 'dev_incelsis_5203', 'test_fdb_500'],  # 24
         ['train_incelsis_5203+train_evalita18facebook+train_evalita18twitter+train_evalita20', 'dev_incelsis_5203', 'test_fdb_500'],  # 25
+        ['train_evalita18facebook+train_evalita18twitter', 'dev_incelsis_5203', 'test_fdb_500'],  # 26
     ]
 
     # set train datasets
@@ -512,7 +513,7 @@ for j in range(0, 1):
 
     # %% Loop
 
-    for model_name in model_name_list[5:6]:
+    for model_name in model_name_list[12:13]:
         for i in range():
 
             # Filename bits
