@@ -1,26 +1,54 @@
-\begin{tabular}{c|c|c|l|cccc|cccc}
-  \hline
-  \multirow{2}{*}[0pt]{ Lang.}   &\multirow{2}{*}[0pt]{ Class}&     \multirow{2}{*}[0pt]{ Epoch}   &     \multirow{2}{*}[0pt]{ Model}               &  \multicolumn{4}{c|}{ Validation}              & \multicolumn{4}{c}{ Test} \\
-  \cline{5-12}
-    &    &   &     &       F1 &       St.Dev &    Recall &   Precision &        F1 &        St.Dev &   Recall   &   Precision \\
-  \hline
-  \multirow{6}{*}[0pt]{\rotatebox[origin=c]{0}{Mono}}  & \multirow{3}{*}[0pt]{Misogyny}    & 2 &     BERT base &   0.759 &          0.009 &    0.737 &     0.783 &    0.804 &           0.014 &     0.800 &      0.808 \\
-  &  & 1 & Incel BERT 1M &   0.786 &          0.005 &    0.786 &     0.786 &    0.803 &           0.005 &     0.826 &      0.782 \\
-  &  & 3 &           CNN &   0.702 &          0.027 &    0.651 &     0.769 &    0.761 &           0.020 &     0.731 &      0.805 \\
-  \cline{2-12}
-  &\multirow{3}{*}[0pt]{Racism} &1 & Incel BERT 1M &   0.854 &          0.012 &    0.838 &     0.872 &    0.821 &           0.012 &     0.818 &      0.823 \\
-  &&4 &     BERT base &   0.831 &          0.006 &    0.874 &     0.791 &    0.796 &           0.012 &     0.838 &      0.759 \\
-  &&3 &           CNN &   0.810 &          0.015 &    0.814 &     0.808 &    0.736 &           0.024 &     0.782 &      0.699 \\
+\begin{tabular}{lc|ccc|ccc}
 \hline
-\multirow{4}{*}[0pt]{\rotatebox[origin=c]{0}{Multi}}  & \multirow{2}{*}[0pt]{Misogyny} & 4 & Incel mBERT 1M &   0.773 &          0.008 &    0.757 &     0.790 &    0.552 &           0.049 &     0.404 &      0.886 \\
-&&4 &           mBERT base &   0.764 &          0.022 &    0.749 &     0.781 &    0.214 &           0.102 &     0.127 &      0.813 \\
-\cline{2-12}
-&\multirow{2}{*}[0pt]{Racism} &       4 & Incel mBERT 1M &   0.828 &          0.007 &    0.876 &     0.786 &    0.577 &           0.045 &     0.523 &      0.644 \\
-&& 2 &     mBERT base &   0.818 &          0.010 &    0.859 &     0.781 &    0.393 &           0.015 &     0.354 &      0.459 \\
+\multirow{2}{*}[0pt]{Model}   &     \multirow{2}{*}[0pt]{E}               &  \multicolumn{3}{c|}{Validation}              & \multicolumn{3}{c}{Test} \\
+\cline{3-8}
+&     &       F1  &    Rec &   Prec &        F1  &   Rec   &   Prec \\
 \hline
-% \multirow{4}{*}[0pt]{\rotatebox[origin=c]{90}{Multilingual}}  & \multirow{2}{*}[0pt]{M}      & 4 & Incel mBERT 1M &   0.773 &          0.008 &    0.757 &     0.790 &    0.552 &           0.049 &     0.404 &      0.886 \\
-% & & 4 &           mBERT base &   0.764 &          0.022 &    0.749 &     0.781 &    0.214 &           0.102 &     0.127 &      0.813 \\
-% & \multirow{2}{*}[0pt]{R} & 4 & Incel mBERT 1M & 4 & Incel mBERT 1M &   0.828 &          0.007 &    0.876 &     0.786 &    0.577 &           0.045 &     0.523 &      0.644 \\
-% & & 2 &     mBERT base &   0.818 &          0.010 &    0.859 &     0.781 &    0.393 &           0.015 &     0.354 &      0.459 \\
-% \hline
+Monolingual\\
+~~~~~~~~~Misogyny\\
+\hline
+BERT base & 2 &  0.759 $\pm$          0.009 &    0.737 &     0.783 &    0.804 $\pm$           0.014 &     0.800 &      0.808 \\
+Incel BERT 1M & 1 &  0.786 $\pm$          0.005 &    0.786 &     0.786 &    0.803 $\pm$           0.005 &     0.826 &      0.782 \\
+CNN & 3 &  0.702 $\pm$          0.027 &    0.651 &     0.769 &    0.761 $\pm$           0.020 &     0.731 &      0.805 \\
+\hline
+~~~~~~~~~Racism\\
+\hline
+Incel BERT 1M & 1 &  0.854 $\pm$          0.012 &    0.838 &     0.872 &    0.821 $\pm$           0.012 &     0.818 &      0.823 \\
+BERT base & 4 &  0.831 $\pm$          0.006 &    0.874 &     0.791 &    0.796 $\pm$           0.012 &     0.838 &      0.759 \\
+CNN & 3 &  0.810 $\pm$          0.015 &    0.814 &     0.808 &    0.736 $\pm$           0.024 &     0.782 &      0.699 \\
+\hline
+Multilingual\\
+~~~~~~~~~Misogyny\\
+\hline
+Incel mBERT 1M & 4 &  0.773 $\pm$          0.008 &    0.757 &     0.790 &    0.552 $\pm$           0.049 &     0.404 &      0.886 \\
+mBERT base & 4 &  0.764 $\pm$          0.022 &    0.749 &     0.781 &    0.214 $\pm$           0.102 &     0.127 &      0.813 \\
+\hline
+~~~~~~~~~Racism\\
+\hline
+Incel mBERT 1M &  4 & 0.828 $\pm$          0.007 &    0.876 &     0.786 &    0.577 $\pm$           0.045 &     0.523 &      0.644 \\
+mBERT base & 2 &  0.818 $\pm$          0.010 &    0.859 &     0.781 &    0.393 $\pm$           0.015 &     0.354 &      0.459 \\
+\hline
 \end{tabular}
+
+
+% \begin{tabular}{c|c|c|l|ccc|ccc}
+%   \hline
+%   \multirow{2}{*}[0pt]{L}   &\multirow{2}{*}[0pt]{C}&     \multirow{2}{*}[0pt]{E}   &     \multirow{2}{*}[0pt]{Model}               &  \multicolumn{3}{c|}{Validation}              & \multicolumn{3}{c}{Test} \\
+%   \cline{5-10}
+%     &    &   &     &       F1  &    Rec &   Prec &        F1  &   Rec   &   Prec \\
+%   \hline
+%   \multirow{6}{*}[0pt]{\rotatebox[origin=c]{90}{Monoling.}}  & \multirow{3}{*}[0pt]{M}    & 2 &     BERT base &   0.759 $\pm$          0.009 &    0.737 &     0.783 &    0.804 $\pm$           0.014 &     0.800 &      0.808 \\
+%   &  & 1 & Incel BERT 1M &   0.786 $\pm$          0.005 &    0.786 &     0.786 &    0.803 $\pm$           0.005 &     0.826 &      0.782 \\
+%   &  & 3 &           CNN &   0.702 $\pm$          0.027 &    0.651 &     0.769 &    0.761 $\pm$           0.020 &     0.731 &      0.805 \\
+%   \cline{2-10}
+%   &\multirow{3}{*}[0pt]{R} &1 & Incel BERT 1M &   0.854 $\pm$          0.012 &    0.838 &     0.872 &    0.821 $\pm$           0.012 &     0.818 &      0.823 \\
+%   &&4 &     BERT base &   0.831 $\pm$          0.006 &    0.874 &     0.791 &    0.796 $\pm$           0.012 &     0.838 &      0.759 \\
+%   &&3 &           CNN &   0.810 $\pm$          0.015 &    0.814 &     0.808 &    0.736 $\pm$           0.024 &     0.782 &      0.699 \\
+% \hline
+% \multirow{4}{*}[0pt]{\rotatebox[origin=c]{90}{Multiling.}}  & \multirow{2}{*}[0pt]{M} & 4 & Incel mBERT 1M &   0.773 $\pm$          0.008 &    0.757 &     0.790 &    0.552 $\pm$           0.049 &     0.404 &      0.886 \\
+% &&4 &           mBERT base &   0.764 $\pm$          0.022 &    0.749 &     0.781 &    0.214 $\pm$           0.102 &     0.127 &      0.813 \\
+% \cline{2-10}
+% &\multirow{2}{*}[0pt]{R} &       4 & Incel mBERT 1M &   0.828 $\pm$          0.007 &    0.876 &     0.786 &    0.577 $\pm$           0.045 &     0.523 &      0.644 \\
+% && 2 &     mBERT base &   0.818 $\pm$          0.010 &    0.859 &     0.781 &    0.393 $\pm$           0.015 &     0.354 &      0.459 \\
+% \hline
+% \end{tabular}
