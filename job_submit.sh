@@ -11,4 +11,4 @@
 #SBATCH --mail-user=paolo.gajo@gmail.com
 
 cd /home/pgajo/working/src
-pipenv run python /home/pgajo/working/src/2023-04-18_train_BERT_regression_hftrainer.py
+pipenv run python /home/pgajo/working/src/2023-03-26_train_mBERT_binary_multilingual_hftrainer.py

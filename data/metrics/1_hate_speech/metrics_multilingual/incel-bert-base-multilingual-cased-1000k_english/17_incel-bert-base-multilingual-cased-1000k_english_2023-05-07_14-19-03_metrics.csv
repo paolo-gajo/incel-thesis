@@ -1,0 +1,5 @@
+epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+1.0,0.8442211055276382,0.896797153024911,0.7974683544303798,0.02955665024630542,1.0,0.015,incel-bert-base-multilingual-cased-1000k_english,3642,train_incelsis(3642),dev_incelsis(780),test_fdb_500(500),17
+2.0,0.8562197092084007,0.8745874587458746,0.8386075949367089,0.04854368932038835,0.8333333333333334,0.025,incel-bert-base-multilingual-cased-1000k_english,3642,train_incelsis(3642),dev_incelsis(780),test_fdb_500(500),17
+3.0,0.8567073170731707,0.8264705882352941,0.8892405063291139,0.10377358490566037,0.9166666666666666,0.055,incel-bert-base-multilingual-cased-1000k_english,3642,train_incelsis(3642),dev_incelsis(780),test_fdb_500(500),17
+4.0,0.8540031397174254,0.8473520249221184,0.8607594936708861,0.05797101449275362,0.8571428571428571,0.03,incel-bert-base-multilingual-cased-1000k_english,3642,train_incelsis(3642),dev_incelsis(780),test_fdb_500(500),17

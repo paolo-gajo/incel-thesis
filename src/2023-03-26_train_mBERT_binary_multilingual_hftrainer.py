@@ -351,7 +351,7 @@ print('evalita20 full train set size:', len(df_train_evalita20))
 
 # %% Dataset combination choice
 
-for j in range(26, 27):
+for j in range(17, 18):
     metrics_id = j
 
     # %% Dataset combinations
@@ -504,17 +504,21 @@ for j in range(26, 27):
 
         # multilingual models
         'bert-base-multilingual-cased',  # 9
-        # '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-10k_multi',  # 10
-        # '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-100k_multi',  # 11
+        '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-10k_multi',  # 10
+        '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-100k_multi',  # 11
         '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-1000k_multi',  # 12
+        '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-10k_english',  # 13
+        '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-100k_english',  # 14
+        '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-1000k_english',  # 15
+        '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-10k_italian',  # 16
+        '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-100k_italian',  # 17
+        '/home/pgajo/working/pt_models/incel-bert-base-multilingual-cased-627k_italian',  # 18
     ]
-
-    # model_name = model_name_list[0:6]
 
     # %% Loop
 
-    for model_name in model_name_list[12:13]:
-        for i in range():
+    for model_name in model_name_list[13:18]:
+        for i in range(10):
 
             # Filename bits
             metrics_path_category = '/home/pgajo/working/data/metrics/1_hate_speech'
