@@ -1,0 +1,5 @@
+epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+1.0,0.8620689655172414,0.8540372670807453,0.870253164556962,0.9215189873417722,0.914572864321608,0.9285714285714286,incel-bert-base-uncased-1000k_english,3642,train_incelsis(3642),dev_incelsis(780),test_incelsis(300),RANLP_review_metrics_incel_terms
+2.0,0.8736681887366818,0.841642228739003,0.9082278481012658,0.9343434343434343,0.925,0.9438775510204082,incel-bert-base-uncased-1000k_english,3642,train_incelsis(3642),dev_incelsis(780),test_incelsis(300),RANLP_review_metrics_incel_terms
+3.0,0.869983948635634,0.8827361563517915,0.8575949367088608,0.9333333333333333,0.9381443298969072,0.9285714285714286,incel-bert-base-uncased-1000k_english,3642,train_incelsis(3642),dev_incelsis(780),test_incelsis(300),RANLP_review_metrics_incel_terms
+4.0,0.8740279937791602,0.8593272171253823,0.8892405063291139,0.9309462915601023,0.9333333333333333,0.9285714285714286,incel-bert-base-uncased-1000k_english,3642,train_incelsis(3642),dev_incelsis(780),test_incelsis(300),RANLP_review_metrics_incel_terms

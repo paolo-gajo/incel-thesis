@@ -47,10 +47,9 @@ df = pd.read_csv('/home/pgajo/working/incels/data/datasets/English/Incels.is/IFD
 
 using_incel_terms = 0
 
-df = df[df['incel_terms'] == using_incel_terms]
-
 df_train = df[df['data_type'] == 'train_incelsis']
 df_dev = df[df['data_type'] == 'dev_incelsis']
+df = df[df['incel_terms'] == using_incel_terms]
 df_test = df[df['data_type'] == 'test_incelsis']
 
 # Print the size of each split
@@ -106,13 +105,13 @@ model_name_list = [
 model_name = model_name_list[6]
 
 for i in range(10):
-
     # Filename bits
     # metrics_path_category = '/home/pgajo/working/incels/data/metrics/1_hate_speech'
     # metrics_path_category = '/home/pgajo/working/incels/data/metrics/2_1_misogyny'
     # metrics_path_category = '/home/pgajo/working/incels/data/metrics/2_2_racism'
     # metrics_path_category = '/home/pgajo/working/incels/data/metrics/3_hate_forecasting'
-    metrics_path_category = '/home/pgajo/working/incels/data/metrics/review_metrics'
+    # metrics_path_category = '/home/pgajo/working/incels/data/metrics/review_metrics'
+    metrics_path_category = '/home/pgajo/working/incels/data/metrics/review_metrics_2'
 
     if using_incel_terms == 1:
         metrics_save_path = f'{metrics_path_category}/incel_terms/'
@@ -136,7 +135,7 @@ for i in range(10):
         metrics_save_path_model,
         '\n#####################################################\n')
 
-    set_seeds(seed_value=i)
+    set_seeds(seed_value = i)
 
     # reset time
     now = datetime.now()
