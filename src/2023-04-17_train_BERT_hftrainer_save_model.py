@@ -385,6 +385,10 @@ metrics_list_names = [
     ['train_incelsis_5203+train_evalita18facebook+train_evalita18twitter', 'dev_incelsis_5203', 'test_fdb_500'],  # 23
     ['train_incelsis_5203+train_evalita20', 'dev_incelsis_5203', 'test_fdb_500'],  # 24
     ['train_incelsis_5203+train_evalita18facebook+train_evalita18twitter+train_evalita20', 'dev_incelsis_5203', 'test_fdb_500'],  # 25
+
+    # italian-only training
+    ['train_evalita18facebook', 'dev_incelsis_5203', 'test_fdb_500'],  # 21
+
 ]
 
 # set train datasets
