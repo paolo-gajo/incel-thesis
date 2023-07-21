@@ -1,0 +1,4 @@
+epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+1.0,0.8140195768866436,0.7878973105134475,0.8419333768778576,0.5754985754985755,0.6688741721854304,0.505,bert_uncased_L-12_H-768_A-12_italian_alb3rt0,8285,"df_evalita20_train(4785)
+df_ami20_train(3500)","df_evalita20_dev(2052)
+df_ami20_dev(1500)",test_fdb_500(500),32

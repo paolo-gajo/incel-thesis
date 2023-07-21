@@ -1,0 +1,16 @@
+epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+1.0,0.7529107373868047,0.7836624775583483,0.7244813278008299,0.6651053864168618,0.6255506607929515,0.71,umberto-commoncrawl-cased-v1,6884,"df_evalita20_train(4785)
+df_evalita18facebook_train(2099)","df_evalita20_dev(2052)
+df_evalita18facebook_dev(900)",test_fdb_500(500),30
+2.0,0.7801532876159741,0.7590266875981162,0.8024896265560166,0.6781857451403888,0.596958174904943,0.785,umberto-commoncrawl-cased-v1,6884,"df_evalita20_train(4785)
+df_evalita18facebook_train(2099)","df_evalita20_dev(2052)
+df_evalita18facebook_dev(900)",test_fdb_500(500),30
+3.0,0.7807486631016042,0.7740619902120718,0.787551867219917,0.6335697399527187,0.600896860986547,0.67,umberto-commoncrawl-cased-v1,6884,"df_evalita20_train(4785)
+df_evalita18facebook_train(2099)","df_evalita20_dev(2052)
+df_evalita18facebook_dev(900)",test_fdb_500(500),30
+4.0,0.7918142463597009,0.7529940119760479,0.8348547717842324,0.6783369803063457,0.603112840466926,0.775,umberto-commoncrawl-cased-v1,6884,"df_evalita20_train(4785)
+df_evalita18facebook_train(2099)","df_evalita20_dev(2052)
+df_evalita18facebook_dev(900)",test_fdb_500(500),30
+5.0,0.7827502034174126,0.767757382282522,0.7983402489626557,0.6590389016018307,0.6075949367088608,0.72,umberto-commoncrawl-cased-v1,6884,"df_evalita20_train(4785)
+df_evalita18facebook_train(2099)","df_evalita20_dev(2052)
+df_evalita18facebook_dev(900)",test_fdb_500(500),30

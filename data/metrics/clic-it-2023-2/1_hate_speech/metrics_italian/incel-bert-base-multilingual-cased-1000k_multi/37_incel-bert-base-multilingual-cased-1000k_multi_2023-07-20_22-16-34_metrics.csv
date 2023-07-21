@@ -1,0 +1,16 @@
+epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+1.0,0.8585690515806988,0.9052631578947369,0.8164556962025317,0.6903073286052009,0.6547085201793722,0.73,incel-bert-base-multilingual-cased-1000k_multi,10526,"df_evalita20_train(4785)
+train_incelsis(3642)
+df_evalita18facebook_train(2099)",dev_incelsis(780),test_fdb_500(500),37
+2.0,0.8575949367088608,0.8575949367088608,0.8575949367088608,0.6745283018867924,0.6383928571428571,0.715,incel-bert-base-multilingual-cased-1000k_multi,10526,"df_evalita20_train(4785)
+train_incelsis(3642)
+df_evalita18facebook_train(2099)",dev_incelsis(780),test_fdb_500(500),37
+3.0,0.8486842105263157,0.8835616438356164,0.8164556962025317,0.6727688787185354,0.620253164556962,0.735,incel-bert-base-multilingual-cased-1000k_multi,10526,"df_evalita20_train(4785)
+train_incelsis(3642)
+df_evalita18facebook_train(2099)",dev_incelsis(780),test_fdb_500(500),37
+4.0,0.8419405320813772,0.8328173374613003,0.8512658227848101,0.701123595505618,0.636734693877551,0.78,incel-bert-base-multilingual-cased-1000k_multi,10526,"df_evalita20_train(4785)
+train_incelsis(3642)
+df_evalita18facebook_train(2099)",dev_incelsis(780),test_fdb_500(500),37
+5.0,0.8472440944881889,0.8432601880877743,0.8512658227848101,0.7029478458049887,0.6431535269709544,0.775,incel-bert-base-multilingual-cased-1000k_multi,10526,"df_evalita20_train(4785)
+train_incelsis(3642)
+df_evalita18facebook_train(2099)",dev_incelsis(780),test_fdb_500(500),37

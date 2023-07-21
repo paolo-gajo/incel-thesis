@@ -19,8 +19,6 @@ import torch
 from sklearn.metrics import classification_report, f1_score, accuracy_score, precision_score, recall_score, log_loss
 import random
 import os
-# import csv
-from pgfuncs import tokenize_and_vectorize, pad_trunc, collect_expected, tokenize_and_vectorize_1dlist, collect_expected_1dlist, df_classification_report
 
 from datetime import datetime
 # timestamp for file naming
@@ -42,7 +40,7 @@ def set_seeds(seed_value=42):
 
 # load incelsis_5203 dataset
 df_incelsis_5203 = pd.read_csv(
-    '/home/pgajo/working/incels/data/datasets/English/Incels.is/IFD-EN-5203_splits.csv')
+    '/home/pgajo/working/incels/data/datasets/English/Incels.is/IFD-EN-5203.csv')
 
 df_train_incelsis_5203 = df_incelsis_5203[df_incelsis_5203['data_type']
                                           == 'train_incelsis']
@@ -313,81 +311,91 @@ print('Stormfront dataset test set size:', len(df_test_stormfront))
 # load the evalita18twitter set
 file_path_csv_evalita18twitter = '/home/pgajo/working/incels/data/datasets/Italian/haspeede_evalita/2018/TW-folder-20230313T173228Z-001/TW-folder/TW-train/haspeede_TW-train.tsv'
 
-df_evalita18twitter = pd.read_csv(file_path_csv_evalita18twitter, sep='\t', names=['id', 'text', 'hs'])
+df_evalita18twitter = pd.read_csv(file_path_csv_evalita18twitter, sep='\t', )
 df_evalita18twitter.columns = ['id', 'text', 'hs']
 
-# split the evalita18twitter set into training, dev and test sets, 70/15/15
+# split the evalita18twitter set into training and dev sets, 70:30
 
-df_evalita18twitter_devtest_size = 0.3
+df_evalita18twitter_dev_size = 0.3
 
-df_train_evalita18twitter, df_test_evalita18twitter = train_test_split(
-    df_evalita18twitter, test_size=df_evalita18twitter_devtest_size, random_state=42)
-
-df_dev_evalita18twitter, df_test_evalita18twitter = train_test_split(
-    df_test_evalita18twitter, test_size=0.5, random_state=42)
+df_train_evalita18twitter, df_dev_evalita18twitter = train_test_split(
+    df_evalita18twitter, test_size=df_evalita18twitter_dev_size, random_state=42)
 
 df_train_evalita18twitter['data_type'] = 'df_evalita18twitter_train'
 df_dev_evalita18twitter['data_type'] = 'df_evalita18twitter_dev'
-df_test_evalita18twitter['data_type'] = 'df_evalita18twitter_test'
-print('evalita18twitter dataset dev+test split size:', df_evalita18twitter_devtest_size)
+print('evalita18twitter dataset dev+test split size:', df_evalita18twitter_dev_size)
 print('evalita18twitter dataset train set size:', len(df_train_evalita18twitter))
 print('evalita18twitter dataset dev set size:', len(df_dev_evalita18twitter))
-print('evalita18twitter dataset test set size:', len(df_test_evalita18twitter))
 
 # load the evalita18facebook set
 file_path_csv_evalita18facebook = '/home/pgajo/working/incels/data/datasets/Italian/haspeede_evalita/2018/FB-folder-20230313T173818Z-001/FB-folder/FB-train/haspeede_FB-train.tsv'
 
-df_evalita18facebook = pd.read_csv(file_path_csv_evalita18facebook, sep='\t', names=['id', 'text', 'hs'])
+df_evalita18facebook = pd.read_csv(file_path_csv_evalita18facebook, sep='\t')
 df_evalita18facebook.columns = ['id', 'text', 'hs']
 
-# split the evalita18facebook set into training, dev and test sets, 70/15/15
+# split the evalita18facebook set into training and dev sets, 70:30
 
-df_evalita18facebook_devtest_size = 0.3
+df_evalita18facebook_dev_size = 0.3
 
-df_train_evalita18facebook, df_test_evalita18facebook = train_test_split(
-    df_evalita18facebook, test_size=df_evalita18facebook_devtest_size, random_state=42)
-
-df_dev_evalita18facebook, df_test_evalita18facebook = train_test_split(
-    df_test_evalita18facebook, test_size=0.5, random_state=42)
+df_train_evalita18facebook, df_dev_evalita18facebook = train_test_split(
+    df_evalita18facebook, test_size=df_evalita18facebook_dev_size, random_state=42)
 
 df_train_evalita18facebook['data_type'] = 'df_evalita18facebook_train'
 df_dev_evalita18facebook['data_type'] = 'df_evalita18facebook_dev'
-df_test_evalita18facebook['data_type'] = 'df_evalita18facebook_test'
-print('evalita18facebook dataset dev+test split size:', df_evalita18facebook_devtest_size)
+print('evalita18facebook dataset dev+test split size:', df_evalita18facebook_dev_size)
 print('evalita18facebook dataset train set size:', len(df_train_evalita18facebook))
 print('evalita18facebook dataset dev set size:', len(df_dev_evalita18facebook))
-print('evalita18facebook dataset test set size:', len(df_test_evalita18facebook))
 
 # load the evalita20 set
 file_path_csv_evalita20_train = '/home/pgajo/working/incels/data/datasets/Italian/haspeede_evalita/2020/haspeede2_dev/haspeede2_dev_taskAB.csv'
 
 df_evalita20 = pd.read_csv(file_path_csv_evalita20_train, index_col=None)
+# df_evalita20.columns = ['id', 'text', 'hs']
 
 # display(df_evalita20)
 df_evalita20 = df_evalita20.fillna('')
 df_evalita20['data_type'] = 'evalita20'
 
-# split the evalita20 set into training, dev and test sets, 70/15/15
+# split the evalita20 set into training and dev sets, 70:30
 
-df_evalita20_devtest_size = 0.3
+df_evalita20_dev_size = 0.3
 
-df_train_evalita20, df_test_evalita20 = train_test_split(
-    df_evalita20, test_size=df_evalita20_devtest_size, random_state=42)
-
-df_dev_evalita20, df_test_evalita20 = train_test_split(
-    df_test_evalita20, test_size=0.5, random_state=42)
+df_train_evalita20, df_dev_evalita20 = train_test_split(
+    df_evalita20, test_size=df_evalita20_dev_size, random_state=42)
 
 df_train_evalita20['data_type'] = 'df_evalita20_train'
 df_dev_evalita20['data_type'] = 'df_evalita20_dev'
-df_test_evalita20['data_type'] = 'df_evalita20_test'
-print('evalita20 dataset dev+test split size:', df_evalita20_devtest_size)
+print('evalita20 dataset dev+test split size:', df_evalita20_dev_size)
 print('evalita20 dataset train set size:', len(df_train_evalita20))
 print('evalita20 dataset dev set size:', len(df_dev_evalita20))
-print('evalita20 dataset test set size:', len(df_test_evalita20))
+
+# load the ami20 set
+file_path_csv_ami20_train = '/home/pgajo/working/incels/data/datasets/Italian/AMI_2020/AMI2020_TrainingSet/AMI2020_training_raw_hs.tsv'
+
+df_ami20 = pd.read_csv(file_path_csv_ami20_train, index_col=None, sep='\t')
+# df_ami20.columns = ['id', 'text', 'hs']
+
+# display(df_ami20)
+df_ami20 = df_ami20.fillna('')
+df_ami20['data_type'] = 'ami20'
+
+# split the ami20 set into training and dev sets, 70:30
+
+df_ami20_dev_size = 0.3
+
+df_train_ami20, df_dev_ami20 = train_test_split(
+    df_ami20, test_size=df_ami20_dev_size, random_state=42)
+
+df_train_ami20['data_type'] = 'df_ami20_train'
+df_dev_ami20['data_type'] = 'df_ami20_dev'
+print('ami20 dataset dev+test split size:', df_ami20_dev_size)
+print('ami20 dataset train set size:', len(df_train_ami20))
+print('ami20 dataset dev set size:', len(df_dev_ami20))
+
 
 # %% Dataset combination choice
 
-for j in range(26, 33):
+for j in range(27, 34):
     metrics_id = j
 
     # %% Dataset combinations
@@ -421,20 +429,31 @@ for j in range(26, 33):
         # english-italian
         ['train_incelsis_5203+train_evalita18facebook', 'dev_incelsis_5203', 'test_fdb_500'],  # 21
         ['train_incelsis_5203+train_evalita18twitter', 'dev_incelsis_5203', 'test_fdb_500'],  # 22
-        ['train_incelsis_5203+train_evalita18facebook+train_evalita18twitter', 'dev_incelsis_5203', 'test_fdb_500'],  # 23
+        ['train_incelsis_5203+train_evalita18facebook+train_evalita18twitter', 'dev_incelsis_5203', 'test_fdb_500'],  # 23 # best combination for english-italian
         ['train_incelsis_5203+train_evalita20', 'dev_incelsis_5203', 'test_fdb_500'],  # 24
         ['train_incelsis_5203+train_evalita18facebook+train_evalita18twitter+train_evalita20', 'dev_incelsis_5203', 'test_fdb_500'],  # 25
+        ['train_incelsis_5203+train_evalita18facebook+train_evalita20', 'dev_incelsis_5203', 'test_fdb_500'],  # 26 gotta test this new one 
 
+        # the models used for the combinations below are AlBERTo, UmBERTo, Incel AlBERTo and Incel UmBERTo
         # italian-only training
-        ['train_evalita18facebook', 'dev_evalita18facebook', 'test_fdb_500'],  # 26
-        ['train_evalita18twitter', 'dev_evalita18twitter', 'test_fdb_500'],  # 27
+        ['train_evalita18facebook', 'dev_evalita18facebook', 'test_fdb_500'],  # 27
         ['train_evalita20', 'dev_evalita20', 'test_fdb_500'],  # 28
+        ['train_ami20', 'dev_ami20', 'test_fdb_500'],  # 29
 
         # all italian combinations
-        ['train_evalita18facebook+train_evalita18twitter', 'dev_evalita18facebook+dev_evalita18twitter', 'test_fdb_500'],  # 29
-        ['train_evalita18facebook+train_evalita20', 'dev_evalita18facebook+dev_evalita20', 'test_fdb_500'],  # 30
-        ['train_evalita18twitter+train_evalita20', 'dev_evalita18twitter+dev_evalita20', 'test_fdb_500'],  # 31
-        ['train_evalita18facebook+train_evalita18twitter+train_evalita20', 'dev_evalita18facebook+dev_evalita18twitter+dev_evalita20', 'test_fdb_500'],  # 32
+        ['train_evalita18facebook+train_evalita20', 'dev_evalita18facebook+dev_evalita20', 'test_fdb_500'],  # 30 # need to compare with 23 using italian models
+        ['train_evalita18facebook+train_ami20', 'dev_evalita18facebook+dev_ami20', 'test_fdb_500'],  # 31
+        ['train_evalita20+train_ami20', 'dev_evalita20+dev_ami20', 'test_fdb_500'],  # 32
+        ['train_evalita18facebook+train_evalita20+train_ami20', 'dev_evalita18facebook+dev_evalita20+dev_ami20', 'test_fdb_500'],  # 33
+
+        # new english-italian combinations with ami20 -- use with mBERT and Incel mBERT
+        ['train_incelsis_5203+train_evalita18facebook', 'dev_incelsis_5203', 'test_fdb_500'],  # 34
+        ['train_incelsis_5203+train_evalita20', 'dev_incelsis_5203', 'test_fdb_500'],  # 35
+        ['train_incelsis_5203+train_ami20', 'dev_incelsis_5203', 'test_fdb_500'],  # 36
+        ['train_incelsis_5203+train_evalita18facebook+train_evalita20', 'dev_incelsis_5203', 'test_fdb_500'],  # 37
+        ['train_incelsis_5203+train_evalita18facebook+train_ami20', 'dev_incelsis_5203', 'test_fdb_500'],  # 38
+        ['train_incelsis_5203+train_evalita20+train_ami20', 'dev_incelsis_5203', 'test_fdb_500'],  # 39
+        ['train_incelsis_5203+train_evalita18facebook+train_evalita20+train_ami20', 'dev_incelsis_5203', 'test_fdb_500'],  # 40
 
     ]
 
@@ -479,6 +498,9 @@ for j in range(26, 33):
     if 'train_evalita20' in metrics_list_names[metrics_id][0]:
         df_train = pd.concat([df_train, df_train_evalita20])
 
+    if 'train_ami20' in metrics_list_names[metrics_id][0]:
+        df_train = pd.concat([df_train, df_train_ami20])
+
     # set dev datasets
     df_dev = pd.DataFrame()
 
@@ -509,6 +531,9 @@ for j in range(26, 33):
     if 'dev_evalita20' in metrics_list_names[metrics_id][1]:
         df_dev = pd.concat([df_dev, df_dev_evalita20])
 
+    if 'dev_ami20' in metrics_list_names[metrics_id][1]:
+        df_dev = pd.concat([df_dev, df_dev_ami20])
+
     # set test datasets
     if 'test_incelsis_5203' in metrics_list_names[metrics_id][2]:
         df_test = df_test_incelsis_5203
@@ -531,20 +556,25 @@ for j in range(26, 33):
     if 'test_stormfront' in metrics_list_names[metrics_id][2]:
         df_test = df_test_stormfront
 
-    if 'test_evalita18facebook' in metrics_list_names[metrics_id][2]:
-        df_test = df_test_evalita18facebook
+    # if 'test_evalita18facebook' in metrics_list_names[metrics_id][2]:
+    #     df_test = df_test_evalita18facebook
 
-    if 'test_evalita18twitter' in metrics_list_names[metrics_id][2]:
-        df_test = df_test_evalita18twitter
+    # if 'test_evalita18twitter' in metrics_list_names[metrics_id][2]:
+    #     df_test = df_test_evalita18twitter
 
-    if 'test_evalita20' in metrics_list_names[metrics_id][2]:
-        df_test = df_test_evalita20
+    # if 'test_evalita20' in metrics_list_names[metrics_id][2]:
+    #     df_test = df_test_evalita20
+
+    print('////////////////////////////////// Run ID:', metrics_id)
 
     df_train = df_train.sample(frac=1)[:]
+    print(df_train)
     df_dev = df_dev.sample(frac=1)[:]
+    print(df_dev)
     df_test = df_test.sample(frac=1)[:]
+    print(df_test)
 
-    print('Run ID:', metrics_id)
+    
     print('Train sets:')
     print(df_train['data_type'].value_counts(normalize=False))
     print('Train set length:', len(df_train), '\n')
@@ -571,21 +601,25 @@ for j in range(26, 33):
         # '/home/pgajo/working/incels/pt_models/incel-roberta-base-1000k_english',  # 9
 
         # multilingual models
-        'bert-base-multilingual-cased',  # 10
+        # 'bert-base-multilingual-cased',  # 10
         # '/home/pgajo/working/incels/pt_models/incel-bert-base-multilingual-cased-10k_multi',  # 11
         # '/home/pgajo/working/incels/pt_models/incel-bert-base-multilingual-cased-100k_multi',  # 12
         # '/home/pgajo/working/incels/pt_models/incel-bert-base-multilingual-cased-1000k_multi',  # 13
-        '/home/pgajo/working/incels/pt_models/incel-bert-base-multilingual-cased-627k_italian',  # 14
+        # '/home/pgajo/working/incels/pt_models/incel-bert-base-multilingual-cased-627k_italian',  # 14
 
         # italian models
-        'Musixmatch/umberto-commoncrawl-cased-v1',  # 15
+        'm-polignano-uniba/bert_uncased_L-12_H-768_A-12_italian_alb3rt0', # 15
+        '/home/pgajo/working/incels/pt_models/clic-it-2023/non-fine-tuned/incel-bert_uncased_L-12_H-768_A-12_italian_alb3rt0-627k_italian',  # 16
+        'Musixmatch/umberto-commoncrawl-cased-v1',  # 17
+        '/home/pgajo/working/incels/pt_models/clic-it-2023/non-fine-tuned/umberto-commoncrawl-cased-v1-627k_italian',  # 18
+        
     ]
 
     for model_name in model_name_list:
         for i in range(5):
 
             # Filename bits
-            metrics_path_category = '/home/pgajo/working/incels/data/metrics/clic-it-2023/1_hate_speech'
+            metrics_path_category = '/home/pgajo/working/incels/data/metrics/clic-it-2023-2/1_hate_speech'
             # metrics_path_category = '/home/pgajo/working/incels/data/metrics/clic-it-2023/2_1_misogyny'
             # metrics_path_category = '/home/pgajo/working/incels/data/metrics/clic-it-2023/2_2_racism'
             # metrics_path_category = '/home/pgajo/working/incels/data/metrics/clic-it-2023/3_hate_forecasting'
@@ -623,6 +657,8 @@ for j in range(26, 33):
                 metrics_save_path_model, metrics_filename)
             print(metrics_csv_filepath)
 
+            print('############ model_name:', model_name)
+
             # get tokenizer and model
             tokenizer = AutoTokenizer.from_pretrained(model_name)
             model = AutoModelForSequenceClassification.from_pretrained(model_name)
@@ -635,7 +671,6 @@ for j in range(26, 33):
                 print(model.config)
 
             # Data pre-processing
-            display(df_test)
             # Encode the training data using the tokenizer
             encoded_data_train = tokenizer.batch_encode_plus(
                 [el for el in tqdm(df_train.text.values)],
@@ -847,8 +882,24 @@ for j in range(26, 33):
                 optimizers=(optimizer, None),
             )
 
-            model_path = '/home/pgajo/working/incels/pt_models'
-            model_name_ft = model_name_simple + '_' + 'finetuned' + metrics_path_category.split('/')[-1] + '_' + 'metrics_id_' + str(metrics_id)
+            # Train the model
+            trainer.train()
+
+            model_path = '/home/pgajo/working/incels/pt_models/clic-it-2023/fine-tuned/' + model_name_simple
+            if not os.path.exists(model_path):
+                os.makedirs(model_path)
+
+            # get the top test_f1 from df_metrics and append the score to the name of the model that we are saving
+
+            df_metrics = pd.read_csv(metrics_csv_filepath)
+
+            # get the highest val_f1 and test_f1 value from df_metrics
+
+            val_f1_max = str(round(df_metrics['val_f1'].max(), 3))
+
+            test_f1_max = str(round(df_metrics['test_f1'].max(), 3))
+                
+            model_name_ft = model_name_simple + '_' + 'FT' + metrics_path_category.split('/')[-1] + '_' + 'metrics_id_' + str(metrics_id) + '_' + 'val_f1_' + val_f1_max + '_' + 'test_f1_' + test_f1_max
             model_save_path = os.path.join(model_path, model_name_ft)
 
             if not os.path.exists(model_save_path):
@@ -857,9 +908,6 @@ for j in range(26, 33):
             print('###################################')
             print('Saving model to: ', model_save_path)
             print('###################################')
-
-            # Train the model
-            trainer.train()
 
             model.save_pretrained(model_save_path)
             tokenizer.save_pretrained(model_save_path)

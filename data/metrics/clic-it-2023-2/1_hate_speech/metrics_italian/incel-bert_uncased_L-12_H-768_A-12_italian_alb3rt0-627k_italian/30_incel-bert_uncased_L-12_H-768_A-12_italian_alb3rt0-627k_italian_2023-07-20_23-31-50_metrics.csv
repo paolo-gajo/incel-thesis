@@ -1,0 +1,16 @@
+epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+1.0,0.7013989387361312,0.8375576036866359,0.6033195020746888,0.6402266288951841,0.738562091503268,0.565,incel-bert_uncased_L-12_H-768_A-12_italian_alb3rt0-627k_italian,6884,"df_evalita20_train(4785)
+df_evalita18facebook_train(2099)","df_evalita20_dev(2052)
+df_evalita18facebook_dev(900)",test_fdb_500(500),30
+2.0,0.7657620041753654,0.7705882352941177,0.7609958506224066,0.6535626535626535,0.642512077294686,0.665,incel-bert_uncased_L-12_H-768_A-12_italian_alb3rt0-627k_italian,6884,"df_evalita20_train(4785)
+df_evalita18facebook_train(2099)","df_evalita20_dev(2052)
+df_evalita18facebook_dev(900)",test_fdb_500(500),30
+3.0,0.7618664521319388,0.7392661982825918,0.7858921161825726,0.6618357487922707,0.6401869158878505,0.685,incel-bert_uncased_L-12_H-768_A-12_italian_alb3rt0-627k_italian,6884,"df_evalita20_train(4785)
+df_evalita18facebook_train(2099)","df_evalita20_dev(2052)
+df_evalita18facebook_dev(900)",test_fdb_500(500),30
+4.0,0.7689350249903883,0.7163323782234957,0.8298755186721992,0.6864988558352403,0.6329113924050633,0.75,incel-bert_uncased_L-12_H-768_A-12_italian_alb3rt0-627k_italian,6884,"df_evalita20_train(4785)
+df_evalita18facebook_train(2099)","df_evalita20_dev(2052)
+df_evalita18facebook_dev(900)",test_fdb_500(500),30
+5.0,0.7652243589743589,0.7397366382649109,0.7925311203319502,0.6666666666666666,0.6448598130841121,0.69,incel-bert_uncased_L-12_H-768_A-12_italian_alb3rt0-627k_italian,6884,"df_evalita20_train(4785)
+df_evalita18facebook_train(2099)","df_evalita20_dev(2052)
+df_evalita18facebook_dev(900)",test_fdb_500(500),30
