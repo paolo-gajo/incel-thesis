@@ -1,0 +1,16 @@
+epoch,val_f1,val_prec,val_rec,test_f1,test_prec,test_rec,model,train_len,train_set(s),dev_set(s),test_set(s),run_id
+1.0,0.7957259585166561,0.7668079951544519,0.8269105160026127,0.6373056994818652,0.6612903225806451,0.615,incel-bert-base-multilingual-cased-1000k_multi,8285,"df_evalita20_train(4785)
+df_ami20_train(3500)","df_evalita20_dev(2052)
+df_ami20_dev(1500)",test_fdb_500(500),32
+2.0,0.7859237536656891,0.7841352405721717,0.7877204441541477,0.6451612903225806,0.6976744186046512,0.6,incel-bert-base-multilingual-cased-1000k_multi,8285,"df_evalita20_train(4785)
+df_ami20_train(3500)","df_evalita20_dev(2052)
+df_ami20_dev(1500)",test_fdb_500(500),32
+3.0,0.8012718600953894,0.7806691449814126,0.8229915088177662,0.6230366492146596,0.6538461538461539,0.595,incel-bert-base-multilingual-cased-1000k_multi,8285,"df_evalita20_train(4785)
+df_ami20_train(3500)","df_evalita20_dev(2052)
+df_ami20_dev(1500)",test_fdb_500(500),32
+4.0,0.8017188459177409,0.7562246670526925,0.8530372305682561,0.6618705035971223,0.6359447004608295,0.69,incel-bert-base-multilingual-cased-1000k_multi,8285,"df_evalita20_train(4785)
+df_ami20_train(3500)","df_evalita20_dev(2052)
+df_ami20_dev(1500)",test_fdb_500(500),32
+5.0,0.8032890575585072,0.7786633966891477,0.829523187459177,0.6342710997442456,0.6492146596858639,0.62,incel-bert-base-multilingual-cased-1000k_multi,8285,"df_evalita20_train(4785)
+df_ami20_train(3500)","df_evalita20_dev(2052)
+df_ami20_dev(1500)",test_fdb_500(500),32
