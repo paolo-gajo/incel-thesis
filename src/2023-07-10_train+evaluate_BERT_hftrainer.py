@@ -41,15 +41,14 @@ def set_seeds(seed_value=42):
 
 
 # load incelsis_5203 dataset
-df = pd.read_csv('/home/pgajo/working/incels/data/datasets/English/Incels.is/IFD-EN-5203_splits_incel_terms.csv')
+df = pd.read_csv('/home/pgajo/working/incels/data/datasets/English/Incels.is/ECIR/IFD-EN-5203_truncated.tsv', sep='\t')
 
-# only keep rows where 'incel_terms' is 1
-
+# only keep rows where 'incel_terms' is 1 or 0
 using_incel_terms = 0
 
 df_train = df[df['data_type'] == 'train_incelsis']
 df_dev = df[df['data_type'] == 'dev_incelsis']
-df = df[df['incel_terms'] == using_incel_terms]
+# df = df[df['incel_terms'] == using_incel_terms]
 df_test = df[df['data_type'] == 'test_incelsis']
 
 # Print the size of each split
@@ -90,7 +89,7 @@ model_name_list = [
     '/home/pgajo/working/incels/pt_models/incel-bert-base-uncased-1000k_english',  # 6
     '/home/pgajo/working/incels/pt_models/incel-roberta-base-10k_english',  # 7
     '/home/pgajo/working/incels/pt_models/incel-roberta-base-100k_english',  # 8
-    '/home/pgajo/working/incels/pt_models/incel-roberta-base-1000k_english',  # 9
+    'pgajo/incel-bert-base-uncased-1000k_english',  # 9
 
     # multilingual models
     'bert-base-multilingual-cased',  # 10
@@ -102,16 +101,14 @@ model_name_list = [
     '/home/pgajo/working/incels/pt_models/bert-base-multilingual-cased_finetuned1_hate_speech_metrics_id_17',  # 14
 ]
 
-model_name = model_name_list[6]
+model_name = model_name_list[9]
 
-for i in range(10):
+for i in range(5):
     # Filename bits
-    # metrics_path_category = '/home/pgajo/working/incels/data/metrics/1_hate_speech'
-    # metrics_path_category = '/home/pgajo/working/incels/data/metrics/2_1_misogyny'
-    # metrics_path_category = '/home/pgajo/working/incels/data/metrics/2_2_racism'
-    # metrics_path_category = '/home/pgajo/working/incels/data/metrics/3_hate_forecasting'
-    # metrics_path_category = '/home/pgajo/working/incels/data/metrics/review_metrics'
-    metrics_path_category = '/home/pgajo/working/incels/data/metrics/review_metrics_2'
+    metrics_path_category = '/home/pgajo/working/incels/data/datasets/English/Incels.is/ECIR/metrics_truncated_0'
+    # metrics_path_category = '/home/pgajo/working/incels/data/datasets/English/Incels.is/ECIR/metrics_truncated_1'
+    # metrics_path_category = '/home/pgajo/working/incels/data/datasets/English/Incels.is/ECIR/metrics_truncated_2'
+    
 
     if using_incel_terms == 1:
         metrics_save_path = f'{metrics_path_category}/incel_terms/'
